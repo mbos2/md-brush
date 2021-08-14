@@ -1,0 +1,54 @@
+<div class="dropdown">
+  <ng-container *ngIf="auth.user$ | async as user; else loggedOut">
+    <div
+      aria-haspopup="true"
+      aria-controls="dropdown-menu"
+      class="user-container userfix dropdown-trigger"
+    >
+      <img
+        [src]="user.picture"
+        alt="User's profile picture"
+        class="img-rounded"
+        width="32"
+        height="32"
+      />
+      <span class="icon"
+        ><i
+          class="fas icofont-rounded-down icofont-2x icofont-rotate-270"
+          width="32"
+          heigth="32"
+        ></i
+      ></span>
+    </div>
+
+    <div #loggedIn class="dropdown-menu" id="dropdown-menu" role="menu">
+      <div class="dropdown-content">
+        <p
+          class="dropdown-item has-text-weight-semibold"
+          style="background-color: #1affa3"
+        >
+          {{ user.name }}
+        </p>
+        <a class="dropdown-item" style="margin-top: 0.5rem"> My themes </a>
+        <hr class="dropdown-divider" />
+        <a
+          class="dropdown-item"
+          (click)="auth.logout({ returnTo: document.location.origin })"
+        >
+          Sign out
+        </a>
+      </div>
+    </div>
+  </ng-container>
+  <ng-template class="user-container" #loggedOut>
+    <div class="user-container buttonsfix">
+      <button (click)="auth.loginWithRedirect()" class="button is-light">
+        Sign in
+      </button>
+      <button class="button is-primary">Sign up</button>
+    </div>
+  </ng-template>
+</div>
+<!-- <div class="loader-wrapper">
+  <div class="loader is-loading"></div>
+</div> -->

@@ -1,0 +1,32 @@
+<nav class="navbar" role="navigation" aria-label="main navigation">
+  <div class="navbar-brand">
+    <a class="navbar-item" href="#">
+      <img src="assets/logo/logo.svg" width="32" height="32" class="logo" />
+    </a>
+
+    <a
+      role="button"
+      class="navbar-burger"
+      aria-label="menu"
+      aria-expanded="false"
+      data-target="navbarBasicExample"
+    >
+      <span aria-hidden="true"></span>
+      <span aria-hidden="true"></span>
+      <span aria-hidden="true"></span>
+    </a>
+  </div>
+
+  <div id="navbarBasicExample" class="navbar-menu">
+    <div
+      class="navbar-end is-flex is-justify-content-center is-align-items-center"
+      style="gap: 1rem"
+    >
+      <a class="navbar-item link" routerLink="/"> Home </a>
+
+      <a class="navbar-item link" routerLink="generate"> Generate </a>
+      <a class="navbar-item link" routerLink="/"> Explore </a>
+      <app-auth-button class="auth-button"></app-auth-button>
+    </div>
+  </div>
+</nav>
