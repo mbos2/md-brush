@@ -35,17 +35,71 @@
       <div class="card">
         <header class="card-header">
           <div class="css-button">
-            <button class="button is-primary" (click)="openDialog()">
+            <button class="button is-primary is-small" (click)="openDialog()">
               GET CSS
             </button>
-            <button class="button ml-3 is-warning" (click)="resetForm()">
+            <button
+              class="button ml-3 is-warning is-small"
+              (click)="resetForm()"
+            >
               <span class="icon is-small is-size-7">
                 <i class="icofont-refresh"></i>
               </span>
-              <span class="ml-1 is-size-7">RESET</span>
+              <span class="ml-1 is-size-7 is-size-8-touch">RESET</span>
             </button>
           </div>
         </header>
+
+        <a
+          href="#font-family"
+          data-action="collapse"
+          class="card-header-title"
+          aria-label="more options"
+          (click)="arrowAnimationToggle($event)"
+          >FONT FAMILY
+          <span class="divider"></span>
+          <span class="icon"
+            ><i
+              class="icofont-rounded-down icofont-2x icofont-rotate-270"
+              width="32"
+              heigth="32"
+            ></i
+          ></span>
+        </a>
+        <div id="font-family" class="is-collapsible">
+          <div class="card-content">
+            <div
+              class="
+                is-flex
+                is-flex-direction-row
+                is-justify-content-center
+                is-align-items-center
+              "
+            >
+              <div class="control has-icons-left">
+                <div class="select">
+                  <select (change)="onMarkdownFontFamilyChangeEvent($event)">
+                    <option
+                      *ngFor="
+                        let fontFamily of markdownTheme.helpers.fontFamilies
+                      "
+                      [value]="fontFamily"
+                      [selected]="fontFamily === 'Arial' ? true : false"
+                      (change)="onMarkdownFontFamilyChangeEvent($event)"
+                    >
+                      {{ fontFamily }}
+                    </option>
+                  </select>
+                </div>
+                <div class="icon is-small is-left">
+                  <i class="icofont-font"></i>
+                </div>
+              </div>
+              <span class="divider"></span>
+              <span>{{ markdownTheme.fontFamily }}</span>
+            </div>
+          </div>
+        </div>
 
         <a
           href="#background"
@@ -179,7 +233,7 @@
                 (change)="onParagraphColorChangeEvent($event)"
               />
               <span class="divider"></span>
-              <span>{{ markdownTheme.headers.color }}</span>
+              <span>{{ markdownTheme.paragraph.color }}</span>
             </div>
             <hr />
             <label class="label mt-2 has-text-weight-light"

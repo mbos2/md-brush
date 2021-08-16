@@ -45,6 +45,19 @@ export class MarkdownPreviewComponent implements OnInit {
 
   //#region Theme styles functions
 
+  //#region Font family
+  private markdownFontFamilyChange(fontFamily: string) {
+    const markdown = this.markdownContainer?.element.nativeElement;
+    return markdown!.style.fontFamily = fontFamily;
+  }
+
+  onMarkdownFontFamilyChangeEvent($event: Event) {
+    const target = $event.target as HTMLInputElement;
+    this.markdownTheme.fontFamily = target.value;
+    return this.markdownFontFamilyChange(this.markdownTheme.fontFamily);
+  }
+  //#endregion
+
   //#region Background
   private markdownBackgroundColorChange(color: string) {
     const wrapper = document.querySelector('.md-preview-section') as HTMLElement;
@@ -201,10 +214,43 @@ export class MarkdownPreviewComponent implements OnInit {
     return this.cssString =
     `
     :root {
-      --theme-background: ${theme.backgroundColor};
+      --theme-global-fontFamily: ${theme.fontFamily};
+      --theme-global-background: ${theme.backgroundColor};
+      --theme-p-color: ${theme.paragraph.color};
+      --theme-p-letterSpacing: ${theme.paragraph.letterSpacing};
+      --theme-a-color: ${theme.anchors.color};
+      --theme-a-letterSpacing: ${theme.anchors.letterSpacing};
+      --theme-a-textDecoration: ${theme.anchors.textDecoration};
+      --theme-a-fontWeight: ${theme.anchors.fontWeight};
+      --theme-a-marginTop: ${theme.anchors.marginTop};
+      --theme-a-marginBottom: ${theme.anchors.marginBottom};
+      --theme-codeInline-color: ${theme.codeInline.color};
+      --theme-codeInline-backgroundColor: ${theme.codeInline.backgroundColor};
+      --theme-codeInline-fontSize: ${theme.codeInline.fontSize};
+      --theme-codeInline-padding: ${theme.codeInline.padding};
+      --theme-codeInline-borderRadius: ${theme.codeInline.borderRadius};
+      --theme-codeBlock-color: ${theme.codeBlock.color};
+      --theme-codeBlock-backgroundColor: ${theme.codeBlock.backgroundColor};
+      --theme-codeBlock-fontSize: ${theme.codeBlock.fontSize};
+      --theme-codeBlock-padding: ${theme.codeBlock.padding};
+      --theme-codeBlock-borderRadius: ${theme.codeBlock.borderRadius};
+      --theme-blockquotes-color: ${theme.blockquotes.color};
+      --theme-blockquotes-backgroundColor: ${theme.blockquotes.backgroundColor};
+      --theme-blockquotes-italic: ${theme.blockquotes.italic};
+      --theme-blockquotes-bold: ${theme.blockquotes.bold};
+      --theme-blockquotes-underline: ${theme.blockquotes.underline};
+      --theme-blockquotes-paddingLeft: ${theme.blockquotes.paddingLeft};
+      --theme-blockquotes-borderLeftColor: ${theme.blockquotes.borderLeftColor};
+      --theme-blockquotes-borderLeftWidth: ${theme.blockquotes.borderLeftWidth};
+      --theme-list-color: ${theme.lists.color};
+      --theme-list-marginLeft: ${theme.lists.marginLeft};
+      --theme-list-paddingLeft: ${theme.lists.paddingLeft};
+      --theme-list-markerColor: ${theme.lists.markerColor};
     }
+
     .markdown {
       background-color: var(--theme-background);
+      font-family: var(--theme-global-fontFamily);
     }
 
     .markdown h1,h2,h3,h4,h5,h6 {
