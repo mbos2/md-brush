@@ -5,6 +5,7 @@ import { ViewChild } from '@angular/core';
 import { Clipboard } from '@angular/cdk/clipboard';
 import bulmaCollapsible from '@creativebulma/bulma-collapsible';
 import { fromEvent } from 'rxjs';
+import { markdownDefaultConfig } from '../../config/markdown-default';
 
 
 @Component({
@@ -19,26 +20,7 @@ export class MarkdownPreviewComponent implements OnInit {
   @ViewChild('scrollTwo') scrollTwo: ElementRef | undefined;
   private markdownNativeElement: any;
   cssString = '';
-  markdownTheme = {
-    background: '#FFFFFF',
-    headers: {
-      color: '#000000',
-      letterSpacing: '0'
-    },
-    paragraph: {
-      color: '#000000',
-      letterSpacing: '0'
-    },
-    anchors: {
-      color: '#000000',
-      letterSpacing: '0',
-      textDecoration: 'underline',
-      fontWeight: '400'
-    },
-    helpers: {
-      fontWeight: ['lighter', 'normal', 'bold', 'bolder']
-    }
-  }
+  markdownTheme = markdownDefaultConfig;
 
   markdownRaw: any;
   markdown: string | undefined;
@@ -54,7 +36,7 @@ export class MarkdownPreviewComponent implements OnInit {
       this.markdown = this.mdService.compile(this.markdownRaw);
     this.markdownNativeElement = this.markdownContainer?.element.nativeElement;
 
-    this.collapsibles = bulmaCollapsible.attach(".is-collapsible");
+    this.collapsibles = bulmaCollapsible.attach(".is-collapsible");    
   }
 
   getMarkdownContentValue(event: Event): string {
@@ -71,8 +53,8 @@ export class MarkdownPreviewComponent implements OnInit {
 
   onMarkdownBackgroundColorChangeEvent($event: Event) {    
     const target = $event.target as HTMLInputElement;
-    this.markdownTheme.background = target.value;
-    return this.markdownBackgroundColorChange(this.markdownTheme.background);
+    this.markdownTheme.backgroundColor = target.value;
+    return this.markdownBackgroundColorChange(this.markdownTheme.backgroundColor);
   }
   //#endregion
 
@@ -206,12 +188,20 @@ export class MarkdownPreviewComponent implements OnInit {
     return this.clipboard.copy(css);
   }
 
+  resetForm() {
+    // return this.markdownTheme = markdownDefaultConfig;
+    const anchors = this.markdownNativeElement.querySelectorAll('a');
+    for (let i = 0; i < anchors!.length; i++) {
+      anchors![i].style.textDecoration = 'none';
+    }
+  }
+
   generateCss() {
     const theme = this.markdownTheme;    
     return this.cssString =
     `
     :root {
-      --theme-background: ${theme.background};
+      --theme-background: ${theme.backgroundColor};
     }
     .markdown {
       background-color: var(--theme-background);

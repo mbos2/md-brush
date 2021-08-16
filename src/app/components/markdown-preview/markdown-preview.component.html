@@ -27,14 +27,18 @@
       >
       </textarea>
     </section>
-    <section class="column p-0 is-flex is-justify-content-center">
+    <!--FORM-->
+    <section
+      class="column p-0 is-flex is-justify-content-center"
+      style="height: fit-content"
+    >
       <div class="card">
         <header class="card-header">
           <div class="css-button">
             <button class="button is-primary" (click)="openDialog()">
               GET CSS
             </button>
-            <button class="button ml-3 is-warning" (click)="openDialog()">
+            <button class="button ml-3 is-warning" (click)="resetForm()">
               <span class="icon is-small is-size-7">
                 <i class="icofont-refresh"></i>
               </span>
@@ -74,7 +78,7 @@
               />
 
               <span class="divider"></span>
-              <span>{{ markdownTheme.background }}</span>
+              <span>{{ markdownTheme.backgroundColor }}</span>
             </div>
           </div>
         </div>
