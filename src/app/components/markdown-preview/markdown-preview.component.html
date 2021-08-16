@@ -76,31 +76,25 @@
                 is-align-items-center
               "
             >
-              <div class="control has-icons-left">
-                <div class="select">
-                  <select (change)="onMarkdownFontFamilyChangeEvent($event)">
-                    <option
-                      *ngFor="
-                        let fontFamily of markdownTheme.helpers.fontFamilies
-                      "
-                      [value]="fontFamily"
-                      [selected]="fontFamily === 'Arial' ? true : false"
-                      (change)="onMarkdownFontFamilyChangeEvent($event)"
-                    >
-                      {{ fontFamily }}
-                    </option>
-                  </select>
-                </div>
-                <div class="icon is-small is-left">
-                  <i class="icofont-font"></i>
-                </div>
-              </div>
+              <select
+                (change)="onMarkdownFontFamilyChangeEvent($event)"
+                class="select is-success is-small"
+              >
+                <option
+                  *ngFor="let fontFamily of markdownTheme.helpers.fontFamilies"
+                  [value]="fontFamily"
+                  [selected]="fontFamily === 'Arial' ? true : false"
+                  (change)="onMarkdownFontFamilyChangeEvent($event)"
+                >
+                  {{ fontFamily }}
+                </option>
+              </select>
+
               <span class="divider"></span>
               <span>{{ markdownTheme.fontFamily }}</span>
             </div>
           </div>
         </div>
-
         <a
           href="#background"
           data-action="collapse"
