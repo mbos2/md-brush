@@ -1,303 +1,325 @@
-<div class="columns mt-1">
-  <div
-    id="mdPreview"
-    class="markdown markdown-container md-preview-section column"
-  >
-    <markdown
-      #markdownContainer
-      class="markdown md-preview-section"
-      [data]="markdownRaw"
-      [(ngModel)]="markdownRaw"
-      name="markdown-preview"
-    ></markdown>
-  </div>
-  <div class="column is-4">
-    <textarea
-      class="markdown-editor"
-      [(ngModel)]="markdownRaw"
-      name="markdown-editor"
-    >
-    </textarea>
-  </div>
-
-  <!-- FORM -->
-  <div class="column is-2">
-    <div class="card">
-      <header class="card-header">THEME FORM</header>
-
-      <a
-        href="#background"
-        data-action="collapse"
-        class="card-header-title"
-        aria-label="more options"
-        (click)="arrowAnimationToggle($event)"
-        >BACKGROUND
-        <span class="divider"></span>
-        <span class="icon"
-          ><i
-            class="icofont-rounded-down icofont-2x icofont-rotate-270"
-            width="32"
-            heigth="32"
-          ></i
-        ></span>
-      </a>
-      <div id="background" class="is-collapsible">
-        <div class="card-content">
-          <label class="label has-text-weight-light">COLOR</label>
-          <div class="is-flex is-justify-content-center is-align-items-center">
-            <input
-              id="color1"
-              class="input"
-              type="color"
-              value="markdownTheme.background"
-              (change)="onMarkdownBackgroundColorChangeEvent($event)"
-            />
-
-            <span class="divider"></span>
-            <span>{{ markdownTheme.background }}</span>
-          </div>
-        </div>
+<section class="section">
+  <section class="columns is-variable">
+    <section class="column is-two-fifths pt-0">
+      <div
+        id="mdPreview"
+        class="md-preview md-preview-section"
+        (scroll)="updateVerticalScrollPreview()"
+        #scrollOne
+      >
+        <markdown
+          #markdownContainer
+          class="markdown md-preview-section p-1"
+          [data]="markdownRaw"
+          [(ngModel)]="markdownRaw"
+          name="markdown-preview"
+        ></markdown>
       </div>
+    </section>
+    <section class="column is-two-fifths pt-0">
+      <textarea
+        class="markdown-editor md-preview"
+        [(ngModel)]="markdownRaw"
+        [value]="markdownRaw"
+        name="markdown-editor"
+        (scroll)="updateVerticalScrollEditor()"
+        #scrollTwo
+      >
+      </textarea>
+    </section>
+    <section class="column p-0 is-flex is-justify-content-center">
+      <div class="card">
+        <header class="card-header">
+          <div class="css-button">
+            <button class="button is-primary" (click)="openDialog()">
+              GET CSS
+            </button>
+            <button class="button ml-3 is-warning" (click)="openDialog()">
+              <span class="icon is-small is-size-7">
+                <i class="icofont-refresh"></i>
+              </span>
+              <span class="ml-1 is-size-7">RESET</span>
+            </button>
+          </div>
+        </header>
 
-      <a
-        href="#headers"
-        data-action="collapse"
-        class="card-header-title"
-        aria-label="more options"
-        (click)="arrowAnimationToggle($event)"
-        >HEADERS
-        <span class="divider"></span>
-        <span class="icon"
-          ><i
-            class="icofont-rounded-down icofont-2x icofont-rotate-270"
-            width="32"
-            heigth="32"
-          ></i
-        ></span>
-      </a>
-      <div id="headers" class="is-collapsible">
-        <div class="card-content">
-          <label class="label has-text-weight-light">COLOR</label>
-          <div
-            class="
-              is-flex
-              is-flex-direction-row
-              is-justify-content-center
-              is-align-items-center
-            "
-          >
-            <input
-              class="input"
-              type="color"
-              value="markdownTheme.headers.color"
-              (change)="onHeadersColorChangeEvent($event)"
-            />
-            <span class="divider"></span>
-            <span>{{ markdownTheme.headers.color }}</span>
-          </div>
-          <hr />
-          <label class="label mt-2 has-text-weight-light">LETTER SPACING</label>
-          <div
-            class="
-              is-flex
-              is-flex-direction-row
-              is-justify-content-center
-              is-align-items-center
-            "
-          >
-            <input
-              class="input"
-              type="number"
-              [value]="markdownTheme.headers.letterSpacing"
-              (change)="onHeadersLetterSpacingChangeEvent($event)"
-            />
-            <span class="divider"></span>
-            <span>{{ markdownTheme.headers.letterSpacing }}px</span>
-          </div>
-          <hr />
-        </div>
-      </div>
+        <a
+          href="#background"
+          data-action="collapse"
+          class="card-header-title"
+          aria-label="more options"
+          (click)="arrowAnimationToggle($event)"
+          >BACKGROUND
+          <span class="divider"></span>
+          <span class="icon"
+            ><i
+              class="icofont-rounded-down icofont-2x icofont-rotate-270"
+              width="32"
+              heigth="32"
+            ></i
+          ></span>
+        </a>
+        <div id="background" class="is-collapsible">
+          <div class="card-content">
+            <label class="label has-text-weight-light">COLOR</label>
+            <div
+              class="is-flex is-justify-content-center is-align-items-center"
+            >
+              <input
+                id="color1"
+                class="input"
+                type="color"
+                value="markdownTheme.background"
+                (change)="onMarkdownBackgroundColorChangeEvent($event)"
+              />
 
-      <!--PARAGRAPHS-->
-      <a
-        href="#paragraphs"
-        data-action="collapse"
-        class="card-header-title"
-        aria-label="more options"
-        (click)="arrowAnimationToggle($event)"
-        >PARAGRAPHS
-        <span class="divider"></span>
-        <span class="icon"
-          ><i
-            class="icofont-rounded-down icofont-2x icofont-rotate-270"
-            width="32"
-            heigth="32"
-          ></i
-        ></span>
-      </a>
-      <div id="paragraphs" class="is-collapsible">
-        <div class="card-content">
-          <label class="label has-text-weight-light">COLOR</label>
-          <div
-            class="
-              is-flex
-              is-flex-direction-row
-              is-justify-content-center
-              is-align-items-center
-            "
-          >
-            <input
-              class="input"
-              type="color"
-              value="markdownTheme.paragraph.color"
-              (change)="onParagraphColorChangeEvent($event)"
-            />
-            <span class="divider"></span>
-            <span>{{ markdownTheme.headers.color }}</span>
-          </div>
-          <hr />
-          <label class="label mt-2 has-text-weight-light">LETTER SPACING</label>
-          <div
-            class="
-              is-flex
-              is-flex-direction-row
-              is-justify-content-center
-              is-align-items-center
-            "
-          >
-            <input
-              class="input"
-              type="number"
-              [value]="markdownTheme.paragraph.letterSpacing"
-              (change)="onParagraphLetterSpacingChangeEvent($event)"
-            />
-            <span class="divider"></span>
-            <span>{{ markdownTheme.paragraph.letterSpacing }}px</span>
-          </div>
-        </div>
-      </div>
-
-      <!--LINKS-->
-      <a
-        href="#links"
-        data-action="collapse"
-        class="card-header-title"
-        aria-label="more options"
-        (click)="arrowAnimationToggle($event)"
-        >LINKS
-        <span class="divider"></span>
-        <span class="icon"
-          ><i
-            class="icofont-rounded-down icofont-2x icofont-rotate-270"
-            width="32"
-            heigth="32"
-          ></i
-        ></span>
-      </a>
-      <div id="links" class="is-collapsible">
-        <div class="card-content">
-          <label class="label has-text-weight-light">COLOR</label>
-          <div
-            class="
-              is-flex
-              is-flex-direction-row
-              is-justify-content-center
-              is-align-items-center
-            "
-          >
-            <input
-              class="input"
-              type="color"
-              value="markdownTheme.headers.color"
-              (change)="onAnchorsColorChangeEvent($event)"
-            />
-            <span class="divider"></span>
-            <span>{{ markdownTheme.anchors.color }}</span>
-          </div>
-          <hr />
-          <label class="label mt-2 has-text-weight-light">LETTER SPACING</label>
-          <div
-            class="
-              is-flex
-              is-flex-direction-row
-              is-justify-content-center
-              is-align-items-center
-            "
-          >
-            <input
-              class="input"
-              type="number"
-              [value]="markdownTheme.headers.letterSpacing"
-              (change)="onAnchorsLetterSpacingChangeEvent($event)"
-            />
-            <span class="divider"></span>
-            <span>{{ markdownTheme.anchors.letterSpacing }}px</span>
-          </div>
-          <hr />
-          <label class="label mt-2 has-text-weight-light">FONT WEIGHT</label>
-          <div
-            class="
-              is-flex
-              is-flex-direction-row
-              is-justify-content-center
-              is-align-items-center
-            "
-          >
-            <div class="control has-icons-left">
-              <div class="select">
-                <select (change)="onAnchorsFontWeightChangeEvent($event)">
-                  <option
-                    *ngFor="let weight of markdownTheme.helpers.fontWeight"
-                    [value]="weight"
-                    [selected]="weight === 'normal' ? true : false"
-                    (change)="onAnchorsFontWeightChangeEvent($event)"
-                  >
-                    {{ weight }}
-                  </option>
-                </select>
-              </div>
-              <div class="icon is-small is-left">
-                <i class="icofont-font"></i>
-              </div>
+              <span class="divider"></span>
+              <span>{{ markdownTheme.background }}</span>
             </div>
-            <span class="divider"></span>
-            <span>{{ markdownTheme.anchors.fontWeight }}</span>
-          </div>
-          <hr />
-          <label class="label mt-2 has-text-weight-light">UNDERLINED</label>
-          <div
-            class="
-              is-flex
-              is-flex-direction-row
-              is-justify-content-center
-              is-align-items-center
-            "
-          >
-            <div class="control has-icons-left">
-              <label class="checkbox">
-                <input
-                  type="checkbox"
-                  checked="true"
-                  [value]="markdownTheme.anchors.textDecoration"
-                  (change)="onAnchorsTextDecorationChangeEvent($event)"
-                />
-              </label>
-            </div>
-            <span class="divider"></span>
-            <span>{{ markdownTheme.anchors.textDecoration }}</span>
           </div>
         </div>
-      </div>
 
-      <!---->
-      <div class="input-span css-button">
-        <button class="button is-primary" (click)="openDialog()">
-          GET CSS
-        </button>
+        <a
+          href="#headers"
+          data-action="collapse"
+          class="card-header-title"
+          aria-label="more options"
+          (click)="arrowAnimationToggle($event)"
+          >HEADERS
+          <span class="divider"></span>
+          <span class="icon"
+            ><i
+              class="icofont-rounded-down icofont-2x icofont-rotate-270"
+              width="32"
+              heigth="32"
+            ></i
+          ></span>
+        </a>
+        <div id="headers" class="is-collapsible">
+          <div class="card-content">
+            <label class="label has-text-weight-light">COLOR</label>
+            <div
+              class="
+                is-flex
+                is-flex-direction-row
+                is-justify-content-center
+                is-align-items-center
+              "
+            >
+              <input
+                class="input"
+                type="color"
+                value="markdownTheme.headers.color"
+                (change)="onHeadersColorChangeEvent($event)"
+              />
+              <span class="divider"></span>
+              <span>{{ markdownTheme.headers.color }}</span>
+            </div>
+            <hr />
+            <label class="label mt-2 has-text-weight-light"
+              >LETTER SPACING</label
+            >
+            <div
+              class="
+                is-flex
+                is-flex-direction-row
+                is-justify-content-center
+                is-align-items-center
+              "
+            >
+              <input
+                class="input"
+                type="number"
+                [value]="markdownTheme.headers.letterSpacing"
+                (change)="onHeadersLetterSpacingChangeEvent($event)"
+              />
+              <span class="divider"></span>
+              <span>{{ markdownTheme.headers.letterSpacing }}px</span>
+            </div>
+            <hr />
+          </div>
+        </div>
+
+        <!--PARAGRAPHS-->
+        <a
+          href="#paragraphs"
+          data-action="collapse"
+          class="card-header-title"
+          aria-label="more options"
+          (click)="arrowAnimationToggle($event)"
+          >PARAGRAPHS
+          <span class="divider"></span>
+          <span class="icon"
+            ><i
+              class="icofont-rounded-down icofont-2x icofont-rotate-270"
+              width="32"
+              heigth="32"
+            ></i
+          ></span>
+        </a>
+        <div id="paragraphs" class="is-collapsible">
+          <div class="card-content">
+            <label class="label has-text-weight-light">COLOR</label>
+            <div
+              class="
+                is-flex
+                is-flex-direction-row
+                is-justify-content-center
+                is-align-items-center
+              "
+            >
+              <input
+                class="input"
+                type="color"
+                value="markdownTheme.paragraph.color"
+                (change)="onParagraphColorChangeEvent($event)"
+              />
+              <span class="divider"></span>
+              <span>{{ markdownTheme.headers.color }}</span>
+            </div>
+            <hr />
+            <label class="label mt-2 has-text-weight-light"
+              >LETTER SPACING</label
+            >
+            <div
+              class="
+                is-flex
+                is-flex-direction-row
+                is-justify-content-center
+                is-align-items-center
+              "
+            >
+              <input
+                class="input"
+                type="number"
+                [value]="markdownTheme.paragraph.letterSpacing"
+                (change)="onParagraphLetterSpacingChangeEvent($event)"
+              />
+              <span class="divider"></span>
+              <span>{{ markdownTheme.paragraph.letterSpacing }}px</span>
+            </div>
+          </div>
+        </div>
+
+        <!--LINKS-->
+        <a
+          href="#links"
+          data-action="collapse"
+          class="card-header-title"
+          aria-label="more options"
+          (click)="arrowAnimationToggle($event)"
+          >LINKS
+          <span class="divider"></span>
+          <span class="icon"
+            ><i
+              class="icofont-rounded-down icofont-2x icofont-rotate-270"
+              width="32"
+              heigth="32"
+            ></i
+          ></span>
+        </a>
+        <div id="links" class="is-collapsible">
+          <div class="card-content">
+            <label class="label has-text-weight-light">COLOR</label>
+            <div
+              class="
+                is-flex
+                is-flex-direction-row
+                is-justify-content-center
+                is-align-items-center
+              "
+            >
+              <input
+                class="input"
+                type="color"
+                value="markdownTheme.headers.color"
+                (change)="onAnchorsColorChangeEvent($event)"
+              />
+              <span class="divider"></span>
+              <span>{{ markdownTheme.anchors.color }}</span>
+            </div>
+            <hr />
+            <label class="label mt-2 has-text-weight-light"
+              >LETTER SPACING</label
+            >
+            <div
+              class="
+                is-flex
+                is-flex-direction-row
+                is-justify-content-center
+                is-align-items-center
+              "
+            >
+              <input
+                class="input"
+                type="number"
+                [value]="markdownTheme.headers.letterSpacing"
+                (change)="onAnchorsLetterSpacingChangeEvent($event)"
+              />
+              <span class="divider"></span>
+              <span>{{ markdownTheme.anchors.letterSpacing }}px</span>
+            </div>
+            <hr />
+            <label class="label mt-2 has-text-weight-light">FONT WEIGHT</label>
+            <div
+              class="
+                is-flex
+                is-flex-direction-row
+                is-justify-content-center
+                is-align-items-center
+              "
+            >
+              <div class="control has-icons-left">
+                <div class="select">
+                  <select (change)="onAnchorsFontWeightChangeEvent($event)">
+                    <option
+                      *ngFor="let weight of markdownTheme.helpers.fontWeight"
+                      [value]="weight"
+                      [selected]="weight === 'normal' ? true : false"
+                      (change)="onAnchorsFontWeightChangeEvent($event)"
+                    >
+                      {{ weight }}
+                    </option>
+                  </select>
+                </div>
+                <div class="icon is-small is-left">
+                  <i class="icofont-font"></i>
+                </div>
+              </div>
+              <span class="divider"></span>
+              <span>{{ markdownTheme.anchors.fontWeight }}</span>
+            </div>
+            <hr />
+            <label class="label mt-2 has-text-weight-light">UNDERLINED</label>
+            <div
+              class="
+                is-flex
+                is-flex-direction-row
+                is-justify-content-center
+                is-align-items-center
+              "
+            >
+              <div class="control has-icons-left">
+                <label class="checkbox">
+                  <input
+                    type="checkbox"
+                    checked="true"
+                    [value]="markdownTheme.anchors.textDecoration"
+                    (change)="onAnchorsTextDecorationChangeEvent($event)"
+                  />
+                </label>
+              </div>
+              <span class="divider"></span>
+              <span>{{ markdownTheme.anchors.textDecoration }}</span>
+            </div>
+          </div>
+        </div>
+
+        <!---->
       </div>
-    </div>
-  </div>
-</div>
+    </section>
+  </section>
+</section>
 
 <!-- MODAL -->
 <div class="modal" id="myModal">

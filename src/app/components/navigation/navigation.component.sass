@@ -31,3 +31,50 @@ nav
   width: 4.5rem
   height: 4.5rem
   max-height: 4.5rem
+
+.md-svg-logo
+  transition: all 0.3s ease
+  &:hover
+    transform: scale(1.1)
+
+.md-svg-logo .bg-fill
+  animation: bgfillOut 0.3s ease forwards
+
+.md-svg-logo:hover .bg-fill
+  animation: bgfill 0.3s ease forwards
+
+.md-svg-logo:hover > .detail-fill
+  transition: all 0.3s ease
+  fill: rgb(0, 46, 77)
+
+.md-svg-logo .detail-fill
+  animation: detailfillOut 0.3s ease forwards
+
+.md-svg-logo:hover .detail-fill
+  animation: detailfill 0.3s ease forwards
+
+@keyframes bgfill
+  0%
+    fill: #323232
+  100%
+    fill: rgb(153, 214, 255)
+    --anim-hover-out: bgfillOut
+
+@keyframes bgfillOut
+  0%
+    fill: rgb(153, 214, 255)
+  100%
+    fill: #323232
+
+@keyframes detailfill
+  0%
+    fill: #2FDF84
+  100%
+    fill: rgb(0, 46, 77)
+    --anim-hover-out: bgfillOut
+
+@keyframes detailfillOut
+  0%
+    fill: rgb(0, 46, 77)
+  100%
+    fill: #2FDF84

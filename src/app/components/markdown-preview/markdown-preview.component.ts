@@ -1,9 +1,10 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, ElementRef, OnInit } from '@angular/core';
 import { MarkdownComponent, MarkdownService } from 'ngx-markdown';
 import { HttpClient } from '@angular/common/http';
 import { ViewChild } from '@angular/core';
 import { Clipboard } from '@angular/cdk/clipboard';
 import bulmaCollapsible from '@creativebulma/bulma-collapsible';
+import { fromEvent } from 'rxjs';
 
 
 @Component({
@@ -14,6 +15,8 @@ import bulmaCollapsible from '@creativebulma/bulma-collapsible';
   
 export class MarkdownPreviewComponent implements OnInit {
   @ViewChild('markdownContainer') private markdownContainer?: MarkdownComponent;
+  @ViewChild('scrollOne', {static: true}) scrollOne: ElementRef | undefined;
+  @ViewChild('scrollTwo') scrollTwo: ElementRef | undefined;
   private markdownNativeElement: any;
   cssString = '';
   markdownTheme = {
@@ -36,7 +39,6 @@ export class MarkdownPreviewComponent implements OnInit {
       fontWeight: ['lighter', 'normal', 'bold', 'bolder']
     }
   }
-  
 
   markdownRaw: any;
   markdown: string | undefined;
@@ -189,12 +191,6 @@ export class MarkdownPreviewComponent implements OnInit {
   //endregion
 
   //#endregion
-  appendOpenAccordionColor($event: Event) {
-    const el = $event.target as HTMLElement;
-    console.log(el)
-    if(this.panelOpenState == false) el.style.backgroundColor = "#fff";
-    else el.style.backgroundColor = "#69f0ae";
-  }
 
   openDialog() {
     this.generateCss();
@@ -230,28 +226,20 @@ export class MarkdownPreviewComponent implements OnInit {
     }
     `
   }
-  //letter-spacing: ${theme.headers.letterSpacing}px;
-  openTab(tabID: string) {
-    const tabContent = document.getElementsByClassName('tabcontent');
-    for (let i = 0; i < tabContent.length; i++) {
-      let el = tabContent[i] as HTMLElement;
-      el.style.display = 'none';
-    }
-
-    const tabLinks = document.getElementsByClassName('tablinks');
-    for (let i = 0; i < tabLinks.length; i++) {
-      let el = tabLinks[i] as HTMLElement;
-      el.classList.toggle('is-active')
-    }
-
-    document.getElementById(tabID)!.style.display = 'block';
-  }
 
   arrowAnimationToggle($event: Event) {
     const target = $event.currentTarget as HTMLElement;
     const icon = target.querySelector('.icofont-rounded-down');
     icon?.classList.toggle('green-arrow');
     icon?.classList.toggle('icofont-rotate-270');
+  }
+
+  updateVerticalScrollPreview(): void {
+    this.scrollTwo!.nativeElement.scrollTop = this.scrollOne!.nativeElement.scrollTop;
+  }
+
+  updateVerticalScrollEditor() {
+    this.scrollOne!.nativeElement.scrollTop = this.scrollTwo!.nativeElement.scrollTop;
   }
   
 } 
