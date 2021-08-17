@@ -4,7 +4,7 @@
       <div
         id="mdPreview"
         class="md-preview md-preview-section"
-        (scroll)="updateVerticalScrollPreview()"
+        (scroll)="onScroll($event, 'md-editor')"
         #scrollOne
       >
         <markdown
@@ -17,11 +17,12 @@
     </section>
     <section class="column is-two-fifths pt-0">
       <textarea
+        id="md-editor"
         class="markdown-editor md-preview"
         [(ngModel)]="markdownRaw"
         [value]="markdownRaw"
         name="markdown-editor"
-        (scroll)="updateVerticalScrollEditor()"
+        (scroll)="onScroll($event, 'mdPreview')"
         #scrollTwo
       >
       </textarea>
@@ -55,7 +56,8 @@
           class="card-header-title"
           aria-label="more options"
           (click)="arrowAnimationToggle($event)"
-          >FONT FAMILY
+        >
+          <span>FONTFAMILY</span>
           <span class="divider"></span>
           <span class="icon"
             ><i

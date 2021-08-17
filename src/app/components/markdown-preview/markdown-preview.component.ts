@@ -1,4 +1,4 @@
-import { Component, ElementRef, OnInit } from '@angular/core';
+import { Component, ElementRef, HostListener, OnInit } from '@angular/core';
 import { MarkdownComponent, MarkdownService } from 'ngx-markdown';
 import { HttpClient } from '@angular/common/http';
 import { ViewChild } from '@angular/core';
@@ -26,6 +26,14 @@ export class MarkdownPreviewComponent implements OnInit {
   typescriptMarkdown: any;
   panelOpenState = false;
   collapsibles: any;
+
+  // @HostListener('scroll', ['$event']) // for scroll events of the current element
+  @HostListener('scroll', ['$event']) // for window scroll events
+  onScroll(event: Event, updatedElementId: string) {
+    const el = event.target as HTMLElement;
+    const secondElement = document.getElementById(updatedElementId);
+    secondElement!.scrollTop = el.scrollTop;
+  }
 
   constructor(private mdService: MarkdownService, private http: HttpClient, private clipboard: Clipboard) { }
 
@@ -269,14 +277,5 @@ export class MarkdownPreviewComponent implements OnInit {
     const icon = target.querySelector('.icofont-rounded-down');
     icon?.classList.toggle('green-arrow');
     icon?.classList.toggle('icofont-rotate-270');
-  }
-
-  updateVerticalScrollPreview(): void {
-    this.scrollTwo!.nativeElement.scrollTop = this.scrollOne!.nativeElement.scrollTop;
-  }
-
-  updateVerticalScrollEditor() {
-    this.scrollOne!.nativeElement.scrollTop = this.scrollTwo!.nativeElement.scrollTop;
-  }
-  
+  }  
 } 
