@@ -3,7 +3,7 @@ export const markdownDefaultConfig = {
   backgroundColor: '#FFFFFF',
   headers: {
     color: '#000000',
-    letterSpacing: '0'
+    letterSpacing: '0.00'
   },
   paragraph: {
     color: '#000000',

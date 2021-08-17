@@ -38,6 +38,8 @@ input[type=color]
   display: inline-block
   top: 5.625em
   width: 85%
+  input[type="number"]
+    min-width: 64px
 
 .card-header
   padding: 1rem
@@ -73,13 +75,10 @@ input[type=color]
 
 textarea
   padding: 1rem
-  border: none
+  transition: 0.3s
+  resize: none
   &:focus
-    border: none
-    outline: none
-  &:active
-    border: none
-    outline: none
+    background-color: #ccffeb
 
 .md-preview
   max-height: 80vh

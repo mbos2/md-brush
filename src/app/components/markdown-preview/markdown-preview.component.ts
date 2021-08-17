@@ -4,7 +4,6 @@ import { HttpClient } from '@angular/common/http';
 import { ViewChild } from '@angular/core';
 import { Clipboard } from '@angular/cdk/clipboard';
 import bulmaCollapsible from '@creativebulma/bulma-collapsible';
-import { fromEvent } from 'rxjs';
 import { markdownDefaultConfig } from '../../config/markdown-default';
 
 
@@ -254,7 +253,9 @@ export class MarkdownPreviewComponent implements OnInit {
     }
 
     .markdown h1,h2,h3,h4,h5,h6 {
-      color: ${theme.headers.color}; ${(theme.headers.letterSpacing == '0' ? '' : `\n      letter-spacing:${theme.headers.letterSpacing}px`)}     
+      color: ${theme.headers.color}; 
+      letter-spacing:${theme.headers.letterSpacing}px;
+      letter-spacing: ${eval('0.0625 * theme.headers.letterSpacing')}rem;
     }
     
     .markdown p {
