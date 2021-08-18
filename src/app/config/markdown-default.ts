@@ -24,11 +24,12 @@ export const markdownDefaultConfig = {
     borderRadius: '0'//+
   },
   codeBlock: {
-    color: '',//+
-    backgroundColor: '',//+
-    fontWeight: '',//+
-    padding: '',//+
-    borderRadius: ''//+
+    color: '#000000',//+
+    backgroundColor: '#FFFFFF',//+
+    fontWeight: 'normal',//+
+    paddingY: '0',//+
+    paddingX: '0',//+
+    borderRadius: '0'//+
   },
   blockquotes: {
     color: '',//+

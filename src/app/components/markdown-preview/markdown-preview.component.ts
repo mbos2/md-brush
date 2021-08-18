@@ -40,7 +40,7 @@ export class MarkdownPreviewComponent implements OnInit {
   async ngOnInit() {
     this.markdownRaw = await this.http.get('/assets/md/blog1.md', 
       { responseType: 'text' }).toPromise();
-      this.markdown = this.mdService.compile(this.markdownRaw);
+    this.markdown = this.mdService.compile(this.markdownRaw);
     this.markdownNativeElement = this.markdownContainer?.element.nativeElement;
 
     this.collapsibles = bulmaCollapsible.attach(".is-collapsible");
@@ -292,6 +292,85 @@ export class MarkdownPreviewComponent implements OnInit {
 
   //#region Pre Code block
 
+  private codeBlockColorChange(color: string) {
+    const code = this.markdownNativeElement.querySelectorAll('pre');
+    for (let i = 0; i < code!.length; i++) {
+      code![i].style.color = color;      
+    }
+  }
+
+  onCodeBlockColorChangeEvent($event: Event) {
+    const target = $event.target as HTMLInputElement;
+    this.markdownTheme.codeBlock.color = target.value;
+    return this.codeBlockColorChange(this.markdownTheme.codeBlock.color);
+  }
+
+  private codeBlockBackgroundColorChange(color: string) {
+    const code = this.markdownNativeElement.querySelectorAll('pre');
+    for (let i = 0; i < code!.length; i++) {
+      code![i].style.backgroundColor = color;
+    }
+  }
+
+  onCodeBlockBackgroundColorChangeEvent($event: Event) {
+    const target = $event.target as HTMLInputElement;
+    this.markdownTheme.codeBlock.backgroundColor = target.value;
+    return this.codeBlockBackgroundColorChange(this.markdownTheme.codeBlock.backgroundColor);
+  }
+
+  private codeBlockFontWeightChange(fontWeight: string) {
+    const code = this.markdownNativeElement.querySelectorAll('pre');
+    for (let i = 0; i < code!.length; i++) {
+        code![i].style.fontWeight = fontWeight;
+    }
+  }
+
+  onCodeBlockFontWeightChangeEvent($event: Event) {
+    const target = $event.target as HTMLInputElement;
+    this.markdownTheme.codeBlock.fontWeight = target.value;
+    return this.codeBlockFontWeightChange(this.markdownTheme.codeBlock.fontWeight);
+  }
+
+  private codeBlockBorderRadiusChange(number: string) {
+    const code = this.markdownNativeElement.querySelectorAll('pre');
+    for (let i = 0; i < code!.length; i++) {
+      code![i].style.borderRadius = `${number}px`;
+    }
+  }
+
+  onCodeBlockBorderRadiusEvent($event: Event) {
+    const target = $event.target as HTMLInputElement;
+    this.markdownTheme.codeBlock.borderRadius = target.value;
+    return this.codeBlockBorderRadiusChange(this.markdownTheme.codeBlock.borderRadius);
+  }
+
+  private codeBlockPaddingXChange(number: string) {
+    const code = this.markdownNativeElement.querySelectorAll('pre');
+    for (let i = 0; i < code!.length; i++) {
+      code![i].style.paddingLeft = `${number}px`;
+      code![i].style.paddingRight = `${number}px`;
+    }
+  }
+
+  onCodeBlockPaddingXEvent($event: Event) {
+    const target = $event.target as HTMLInputElement;
+    this.markdownTheme.codeBlock.paddingX = target.value;
+    return this.codeBlockPaddingXChange(this.markdownTheme.codeBlock.paddingX);
+  }
+
+  private codeBlockPaddingYChange(number: string) {
+    const code = this.markdownNativeElement.querySelectorAll('pre');
+    for (let i = 0; i < code!.length; i++) {
+        code![i].style.paddingTop = `${number}px`;
+        code![i].style.paddingBottom = `${number}px`;
+    }
+  }
+
+  onCodeBlockPaddingYEvent($event: Event) {
+    const target = $event.target as HTMLInputElement;
+    this.markdownTheme.codeBlock.paddingY = target.value;
+    return this.codeBlockPaddingYChange(this.markdownTheme.codeBlock.paddingY);
+  }
   //#endregion
 
   //#region Blockquote
@@ -334,72 +413,85 @@ export class MarkdownPreviewComponent implements OnInit {
       --theme-global-fontFamily: ${theme.fontFamily};
       --theme-global-background: ${theme.backgroundColor};
       --theme-h-color: ${theme.headers.color};
-      --theme-h-letterSpacing: ${theme.headers.letterSpacing};
+      --theme-h-letterSpacing: ${theme.headers.letterSpacing}px;
       --theme-p-color: ${theme.paragraph.color};
-      --theme-p-letterSpacing: ${theme.paragraph.letterSpacing};
+      --theme-p-letterSpacing: ${theme.paragraph.letterSpacing}px;
       --theme-a-color: ${theme.anchors.color};
-      --theme-a-letterSpacing: ${theme.anchors.letterSpacing};
+      --theme-a-letterSpacing: ${theme.anchors.letterSpacing}px;
       --theme-a-textDecoration: ${theme.anchors.textDecoration};
-      --theme-a-fontWeight: ${theme.anchors.fontWeight};
+      --theme-a-fontWeight: ${theme.anchors.fontWeight}px;
       --theme-codeInline-color: ${theme.codeInline.color};
       --theme-codeInline-backgroundColor: ${theme.codeInline.backgroundColor};
-      --theme-codeInline-fontWeight: ${theme.codeInline.fontWeight};
-      --theme-codeInline-paddingX: ${theme.codeInline.paddingX};
-      --theme-codeInline-paddingY: ${theme.codeInline.paddingY};
-      --theme-codeInline-borderRadius: ${theme.codeInline.borderRadius};
+      --theme-codeInline-fontWeight: ${theme.codeInline.fontWeight}px;
+      --theme-codeInline-paddingX: ${theme.codeInline.paddingX}px;
+      --theme-codeInline-paddingY: ${theme.codeInline.paddingY}px;
+      --theme-codeInline-borderRadius: ${theme.codeInline.borderRadius}px;
       --theme-codeBlock-color: ${theme.codeBlock.color};
       --theme-codeBlock-backgroundColor: ${theme.codeBlock.backgroundColor};
-      --theme-codeBlock-padding: ${theme.codeBlock.padding};
-      --theme-codeBlock-borderRadius: ${theme.codeBlock.borderRadius};
+      --theme-codeBlock-paddingX: ${theme.codeBlock.paddingX}px;
+      --theme-codeBlock-paddingY: ${theme.codeBlock.paddingY}px;
+      --theme-codeBlock-borderRadius: ${theme.codeBlock.borderRadius}px;
       --theme-blockquotes-color: ${theme.blockquotes.color};
       --theme-blockquotes-backgroundColor: ${theme.blockquotes.backgroundColor};
       --theme-blockquotes-italic: ${theme.blockquotes.italic};
       --theme-blockquotes-bold: ${theme.blockquotes.bold};
       --theme-blockquotes-underline: ${theme.blockquotes.underline};
-      --theme-blockquotes-paddingLeft: ${theme.blockquotes.paddingLeft};
+      --theme-blockquotes-paddingLeft: ${theme.blockquotes.paddingLeft}px;
       --theme-blockquotes-borderLeftColor: ${theme.blockquotes.borderLeftColor};
       --theme-blockquotes-borderLeftWidth: ${theme.blockquotes.borderLeftWidth};
       --theme-list-color: ${theme.lists.color};
-      --theme-list-marginLeft: ${theme.lists.marginLeft};
-      --theme-list-paddingLeft: ${theme.lists.paddingLeft};
+      --theme-list-marginLeft: ${theme.lists.marginLeft}px;
+      --theme-list-paddingLeft: ${theme.lists.paddingLeft}px;
       --theme-list-markerColor: ${theme.lists.markerColor};
     }
 
     .markdown {
-      background-color: var(--theme-background);
+      background-color: var(--theme-global-background);
       font-family: var(--theme-global-fontFamily);
     }
 
     .markdown h1,h2,h3,h4,h5,h6 {
       color: var(--theme-h-color); 
-      letter-spacing: var(--theme-h-letterSpacing)px;
-      letter-spacing: ${eval('0.0625 * theme.headers.letterSpacing')}rem;
+      letter-spacing: var(--theme-h-letterSpacing);
     }
     
     .markdown p {
       color: var(--theme-p-color); 
-      letter-spacing: var(--theme-p-letterSpacing)px;
-      letter-spacing: ${eval('0.0625 * theme.paragraph.letterSpacing')}rem;
+      letter-spacing: var(--theme-p-letterSpacing);
     }
 
     .markdown a {
       color: var(--theme-a-color); 
       letter-spacing: var(--theme-a-letterSpacing);
-      letter-spacing: ${eval('0.0625 * theme.anchors.letterSpacing')}rem;
       font-weight: var(--theme-a-fontWeight);
       text-decoration: var(--theme-a-textDecoration); 
     }
 
     .markdown code {
-
+      color: var(--theme-codeInline-color);
+      background-color: var(--theme-codeInline-backgroundColor);
+      font-weight: var(--theme-codeInline-fontWeight);
+      border-radius: var(--theme-codeInline-borderRadius);
+      padding-left: var(--theme-codeInline-paddingX);
+      padding-right: var(--theme-codeInline-paddingX);
+      padding-top: var(--theme-codeInline-paddingY);
+      padding-bottom: var(--theme-codeInline-paddingY);
     }
 
     .markdown pre {
-
+      color: var(--theme-codeBlock-color);
+      background-color: var(--theme-codeBlock-backgroundColor);
+      font-weight: var(--theme-codeBlock-fontWeight);
+      border-radius: var(--theme-codeBlock-borderRadius);
+      padding-left: var(--theme-codeBlock-paddingX);
+      padding-right: var(--theme-codeBlock-paddingX);
+      padding-top: var(--theme-codeBlock-paddingY);
+      padding-bottom: var(--theme-codeBlock-paddingY);
     }
 
     .markdown pre code {
-      color: var(--theme-codeInline-color)
+      color: var(--theme-codeBlock-color);
+      background-color: var(--theme-codeBlock-backgroundColor);
     }
 
     .markdown blockquoote {

@@ -536,7 +536,133 @@
           ></span>
         </a>
         <div id="code-block" class="is-collapsible">
-          <div class="card-content"></div>
+          <div class="card-content">
+            <label class="label has-text-weight-light">COLOR</label>
+            <div
+              class="
+                is-flex
+                is-flex-direction-row
+                is-justify-content-center
+                is-align-items-center
+              "
+            >
+              <input
+                class="input"
+                type="color"
+                value="markdownTheme.codeBlock.color"
+                (change)="onCodeBlockColorChangeEvent($event)"
+              />
+              <span class="divider"></span>
+              <span>{{ markdownTheme.codeBlock.color }}</span>
+            </div>
+            <hr />
+            <label class="label has-text-weight-light">BACKGROUND COLOR</label>
+            <div
+              class="is-flex is-justify-content-center is-align-items-center"
+            >
+              <input
+                class="input"
+                type="color"
+                value="markdownTheme.codeBlock.backgroundColor"
+                (change)="onCodeBlockBackgroundColorChangeEvent($event)"
+              />
+
+              <span class="divider"></span>
+              <span>{{ markdownTheme.codeBlock.backgroundColor }}</span>
+            </div>
+            <hr />
+            <label class="label mt-2 has-text-weight-light">FONT WEIGHT</label>
+            <div
+              class="
+                is-flex
+                is-flex-direction-row
+                is-justify-content-center
+                is-align-items-center
+              "
+            >
+              <div class="control has-icons-left">
+                <div class="select">
+                  <select (change)="onCodeBlockFontWeightChangeEvent($event)">
+                    <option
+                      *ngFor="let weight of markdownTheme.helpers.fontWeight"
+                      [value]="weight"
+                      [selected]="weight === 'normal' ? true : false"
+                      (change)="oninlineCodeFontWeightChangeEvent($event)"
+                    >
+                      {{ weight }}
+                    </option>
+                  </select>
+                </div>
+                <div class="icon is-small is-left">
+                  <i class="icofont-font"></i>
+                </div>
+              </div>
+              <span class="divider"></span>
+              <span>{{ markdownTheme.codeBlock.fontWeight }}</span>
+            </div>
+            <hr />
+            <label class="label mt-2 has-text-weight-light"
+              >BORDER RADIUS</label
+            >
+            <div
+              class="
+                is-flex
+                is-flex-direction-row
+                is-justify-content-center
+                is-align-items-center
+              "
+            >
+              <input
+                class="input"
+                type="number"
+                step="0.05"
+                [value]="markdownTheme.codeBlock.borderRadius"
+                (change)="onCodeBlockBorderRadiusEvent($event)"
+              />
+              <span class="divider"></span>
+              <span>{{ markdownTheme.codeBlock.borderRadius }}px</span>
+            </div>
+            <hr />
+            <label class="label mt-2 has-text-weight-light">PADDING X</label>
+            <div
+              class="
+                is-flex
+                is-flex-direction-row
+                is-justify-content-center
+                is-align-items-center
+              "
+            >
+              <input
+                class="input"
+                type="number"
+                step="0.05"
+                [value]="markdownTheme.codeBlock.paddingX"
+                (change)="onCodeBlockPaddingXEvent($event)"
+              />
+              <span class="divider"></span>
+              <span>{{ markdownTheme.codeBlock.paddingX }}px</span>
+            </div>
+            <hr />
+            <label class="label mt-2 has-text-weight-light">PADDING Y</label>
+            <div
+              class="
+                is-flex
+                is-flex-direction-row
+                is-justify-content-center
+                is-align-items-center
+              "
+            >
+              <input
+                class="input"
+                type="number"
+                step="0.05"
+                [value]="markdownTheme.codeBlock.paddingY"
+                (change)="onCodeBlockPaddingYEvent($event)"
+              />
+              <span class="divider"></span>
+              <span>{{ markdownTheme.codeBlock.paddingY }}px</span>
+            </div>
+          </div>
         </div>
 
         <!--BLOCKQUOTES-->
