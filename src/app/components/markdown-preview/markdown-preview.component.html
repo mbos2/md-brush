@@ -28,11 +28,11 @@
       </textarea>
     </section>
     <!--FORM-->
-    <section
-      class="column p-0 is-flex is-justify-content-center"
-      style="height: fit-content"
-    >
-      <div class="card">
+    <section class="column p-0 is-flex is-justify-content-center">
+      <div
+        class="card"
+        style="overflow-y: scroll; max-height: 84vh; height: auto"
+      >
         <header class="card-header">
           <div class="css-button">
             <button class="button is-primary is-small" (click)="openDialog()">
@@ -309,7 +309,7 @@
                 class="input"
                 type="number"
                 step="0.05"
-                [value]="markdownTheme.headers.letterSpacing"
+                [value]="markdownTheme.anchors.letterSpacing"
                 (change)="onAnchorsLetterSpacingChangeEvent($event)"
               />
               <span class="divider"></span>
@@ -371,7 +371,215 @@
           </div>
         </div>
 
-        <!---->
+        <!--CODE INLINE-->
+        <a
+          href="#code-inline"
+          data-action="collapse"
+          class="card-header-title"
+          aria-label="more options"
+          (click)="arrowAnimationToggle($event)"
+          >CODE-INLINE
+          <span class="divider"></span>
+          <span class="icon"
+            ><i
+              class="icofont-rounded-down icofont-2x icofont-rotate-270"
+              width="32"
+              heigth="32"
+            ></i
+          ></span>
+        </a>
+        <div id="code-inline" class="is-collapsible">
+          <div class="card-content">
+            <label class="label has-text-weight-light">COLOR</label>
+            <div
+              class="
+                is-flex
+                is-flex-direction-row
+                is-justify-content-center
+                is-align-items-center
+              "
+            >
+              <input
+                class="input"
+                type="color"
+                value="markdownTheme.codeInline.color"
+                (change)="oninlineCodeColorChangeEvent($event)"
+              />
+              <span class="divider"></span>
+              <span>{{ markdownTheme.codeInline.color }}</span>
+            </div>
+            <hr />
+            <label class="label has-text-weight-light">BACKGROUND COLOR</label>
+            <div
+              class="is-flex is-justify-content-center is-align-items-center"
+            >
+              <input
+                class="input"
+                type="color"
+                value="markdownTheme.codeInline.backgroundColor"
+                (change)="oninlineBackgroundCodeColorChangeEvent($event)"
+              />
+
+              <span class="divider"></span>
+              <span>{{ markdownTheme.codeInline.backgroundColor }}</span>
+            </div>
+            <hr />
+            <label class="label mt-2 has-text-weight-light">FONT WEIGHT</label>
+            <div
+              class="
+                is-flex
+                is-flex-direction-row
+                is-justify-content-center
+                is-align-items-center
+              "
+            >
+              <div class="control has-icons-left">
+                <div class="select">
+                  <select (change)="oninlineCodeFontWeightChangeEvent($event)">
+                    <option
+                      *ngFor="let weight of markdownTheme.helpers.fontWeight"
+                      [value]="weight"
+                      [selected]="weight === 'normal' ? true : false"
+                      (change)="oninlineCodeFontWeightChangeEvent($event)"
+                    >
+                      {{ weight }}
+                    </option>
+                  </select>
+                </div>
+                <div class="icon is-small is-left">
+                  <i class="icofont-font"></i>
+                </div>
+              </div>
+              <span class="divider"></span>
+              <span>{{ markdownTheme.codeInline.fontWeight }}</span>
+            </div>
+            <hr />
+            <label class="label mt-2 has-text-weight-light"
+              >BORDER RADIUS</label
+            >
+            <div
+              class="
+                is-flex
+                is-flex-direction-row
+                is-justify-content-center
+                is-align-items-center
+              "
+            >
+              <input
+                class="input"
+                type="number"
+                step="0.05"
+                [value]="markdownTheme.codeInline.borderRadius"
+                (change)="oninlineCodeBorderRadiusEvent($event)"
+              />
+              <span class="divider"></span>
+              <span>{{ markdownTheme.codeInline.borderRadius }}px</span>
+            </div>
+            <hr />
+            <label class="label mt-2 has-text-weight-light">PADDING X</label>
+            <div
+              class="
+                is-flex
+                is-flex-direction-row
+                is-justify-content-center
+                is-align-items-center
+              "
+            >
+              <input
+                class="input"
+                type="number"
+                step="0.05"
+                [value]="markdownTheme.codeInline.paddingX"
+                (change)="oninlineCodePaddingXEvent($event)"
+              />
+              <span class="divider"></span>
+              <span>{{ markdownTheme.codeInline.paddingX }}px</span>
+            </div>
+            <hr />
+            <label class="label mt-2 has-text-weight-light">PADDING Y</label>
+            <div
+              class="
+                is-flex
+                is-flex-direction-row
+                is-justify-content-center
+                is-align-items-center
+              "
+            >
+              <input
+                class="input"
+                type="number"
+                step="0.05"
+                [value]="markdownTheme.codeInline.paddingY"
+                (change)="oninlineCodePaddingYEvent($event)"
+              />
+              <span class="divider"></span>
+              <span>{{ markdownTheme.codeInline.paddingY }}px</span>
+            </div>
+          </div>
+        </div>
+
+        <!--CODE BLOCK-->
+        <a
+          href="#code-block"
+          data-action="collapse"
+          class="card-header-title"
+          aria-label="more options"
+          (click)="arrowAnimationToggle($event)"
+          >CODE-BLOCK
+          <span class="divider"></span>
+          <span class="icon"
+            ><i
+              class="icofont-rounded-down icofont-2x icofont-rotate-270"
+              width="32"
+              heigth="32"
+            ></i
+          ></span>
+        </a>
+        <div id="code-block" class="is-collapsible">
+          <div class="card-content"></div>
+        </div>
+
+        <!--BLOCKQUOTES-->
+        <a
+          href="#blockquote"
+          data-action="collapse"
+          class="card-header-title"
+          aria-label="more options"
+          (click)="arrowAnimationToggle($event)"
+          >BLOCKQUOTE
+          <span class="divider"></span>
+          <span class="icon"
+            ><i
+              class="icofont-rounded-down icofont-2x icofont-rotate-270"
+              width="32"
+              heigth="32"
+            ></i
+          ></span>
+        </a>
+        <div id="blockquote" class="is-collapsible">
+          <div class="card-content"></div>
+        </div>
+
+        <!--LISTS-->
+        <a
+          href="#lists"
+          data-action="collapse"
+          class="card-header-title"
+          aria-label="more options"
+          (click)="arrowAnimationToggle($event)"
+          >LISTS
+          <span class="divider"></span>
+          <span class="icon"
+            ><i
+              class="icofont-rounded-down icofont-2x icofont-rotate-270"
+              width="32"
+              heigth="32"
+            ></i
+          ></span>
+        </a>
+        <div id="lists" class="is-collapsible">
+          <div class="card-content"></div>
+        </div>
       </div>
     </section>
   </section>

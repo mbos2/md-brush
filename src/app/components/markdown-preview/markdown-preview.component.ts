@@ -38,12 +38,13 @@ export class MarkdownPreviewComponent implements OnInit {
   constructor(private mdService: MarkdownService, private http: HttpClient, private clipboard: Clipboard) { }
 
   async ngOnInit() {
-    this.markdownRaw = await this.http.get('/assets/md/starter-template.md', 
+    this.markdownRaw = await this.http.get('/assets/md/blog1.md', 
       { responseType: 'text' }).toPromise();
       this.markdown = this.mdService.compile(this.markdownRaw);
     this.markdownNativeElement = this.markdownContainer?.element.nativeElement;
 
-    this.collapsibles = bulmaCollapsible.attach(".is-collapsible");    
+    this.collapsibles = bulmaCollapsible.attach(".is-collapsible");
+    document.body.style.overflow = 'hidden';    
   }
 
   getMarkdownContentValue(event: Event): string {
@@ -192,6 +193,115 @@ export class MarkdownPreviewComponent implements OnInit {
   }
   //endregion
 
+  //#region Inline code block
+
+  private inlineCodeColorChange(color: string) {
+    const code = this.markdownNativeElement.querySelectorAll('code');
+    for (let i = 0; i < code!.length; i++) {
+      if (code![i].parentElement.nodeName.toLowerCase() !== 'pre') {
+        code![i].style.color = color;
+      }
+    }
+  }
+
+  oninlineCodeColorChangeEvent($event: Event) {
+    const target = $event.target as HTMLInputElement;
+    this.markdownTheme.codeInline.color = target.value;
+    return this.inlineCodeColorChange(this.markdownTheme.codeInline.color);
+  }
+
+  private inlineCodeBackgroundColorChange(color: string) {
+    const code = this.markdownNativeElement.querySelectorAll('code');
+    for (let i = 0; i < code!.length; i++) {
+      if (code![i].parentElement.nodeName.toLowerCase() !== 'pre') {
+        code![i].style.backgroundColor = color;
+      }
+    }
+  }
+
+  oninlineBackgroundCodeColorChangeEvent($event: Event) {
+    const target = $event.target as HTMLInputElement;
+    this.markdownTheme.codeInline.backgroundColor = target.value;
+    return this.inlineCodeBackgroundColorChange(this.markdownTheme.codeInline.backgroundColor);
+  }
+
+  private inlineCodeFontWeightChange(fontWeight: string) {
+    const code = this.markdownNativeElement.querySelectorAll('code');
+    for (let i = 0; i < code!.length; i++) {
+      if (code![i].parentElement.nodeName.toLowerCase() !== 'pre') {
+        code![i].style.fontWeight = fontWeight;
+      }
+    }
+  }
+
+  oninlineCodeFontWeightChangeEvent($event: Event) {
+    const target = $event.target as HTMLInputElement;
+    this.markdownTheme.codeInline.fontWeight = target.value;
+    return this.inlineCodeFontWeightChange(this.markdownTheme.codeInline.fontWeight);
+  }
+
+  private inlineCodeBorderRadiusChange(number: string) {
+    const code = this.markdownNativeElement.querySelectorAll('code');
+    for (let i = 0; i < code!.length; i++) {
+      if (code![i].parentElement.nodeName.toLowerCase() !== 'pre') {
+        code![i].style.borderRadius = `${number}px`;
+      }
+    }
+  }
+
+  oninlineCodeBorderRadiusEvent($event: Event) {
+    const target = $event.target as HTMLInputElement;
+    this.markdownTheme.codeInline.borderRadius = target.value;
+    return this.inlineCodeBorderRadiusChange(this.markdownTheme.codeInline.borderRadius);
+  }
+
+  private inlineCodePaddingXChange(number: string) {
+    const code = this.markdownNativeElement.querySelectorAll('code');
+    for (let i = 0; i < code!.length; i++) {
+      if (code![i].parentElement.nodeName.toLowerCase() !== 'pre') {
+        code![i].style.paddingLeft = `${number}px`;
+        code![i].style.paddingRight = `${number}px`;
+      }
+    }
+  }
+
+  oninlineCodePaddingXEvent($event: Event) {
+    const target = $event.target as HTMLInputElement;
+    this.markdownTheme.codeInline.paddingX = target.value;
+    return this.inlineCodePaddingXChange(this.markdownTheme.codeInline.paddingX);
+  }
+
+  private inlineCodePaddingYChange(number: string) {
+    const code = this.markdownNativeElement.querySelectorAll('code');
+    for (let i = 0; i < code!.length; i++) {
+      if (code![i].parentElement.nodeName.toLowerCase() !== 'pre') {
+        code![i].style.paddingTop = `${number}px`;
+        code![i].style.paddingBottom = `${number}px`;
+      }
+    }
+  }
+
+  oninlineCodePaddingYEvent($event: Event) {
+    const target = $event.target as HTMLInputElement;
+    this.markdownTheme.codeInline.paddingY = target.value;
+    return this.inlineCodePaddingYChange(this.markdownTheme.codeInline.paddingY);
+  }
+
+
+  //#endregion
+
+  //#region Pre Code block
+
+  //#endregion
+
+  //#region Blockquote
+
+  //#endregion
+
+  //#region List
+
+  //#endregion
+
   //#endregion
 
   openDialog() {
@@ -219,26 +329,26 @@ export class MarkdownPreviewComponent implements OnInit {
   generateCss() {
     const theme = this.markdownTheme;    
     return this.cssString =
-    `
+      `
     :root {
       --theme-global-fontFamily: ${theme.fontFamily};
       --theme-global-background: ${theme.backgroundColor};
+      --theme-h-color: ${theme.headers.color};
+      --theme-h-letterSpacing: ${theme.headers.letterSpacing};
       --theme-p-color: ${theme.paragraph.color};
       --theme-p-letterSpacing: ${theme.paragraph.letterSpacing};
       --theme-a-color: ${theme.anchors.color};
       --theme-a-letterSpacing: ${theme.anchors.letterSpacing};
       --theme-a-textDecoration: ${theme.anchors.textDecoration};
       --theme-a-fontWeight: ${theme.anchors.fontWeight};
-      --theme-a-marginTop: ${theme.anchors.marginTop};
-      --theme-a-marginBottom: ${theme.anchors.marginBottom};
       --theme-codeInline-color: ${theme.codeInline.color};
       --theme-codeInline-backgroundColor: ${theme.codeInline.backgroundColor};
-      --theme-codeInline-fontSize: ${theme.codeInline.fontSize};
-      --theme-codeInline-padding: ${theme.codeInline.padding};
+      --theme-codeInline-fontWeight: ${theme.codeInline.fontWeight};
+      --theme-codeInline-paddingX: ${theme.codeInline.paddingX};
+      --theme-codeInline-paddingY: ${theme.codeInline.paddingY};
       --theme-codeInline-borderRadius: ${theme.codeInline.borderRadius};
       --theme-codeBlock-color: ${theme.codeBlock.color};
       --theme-codeBlock-backgroundColor: ${theme.codeBlock.backgroundColor};
-      --theme-codeBlock-fontSize: ${theme.codeBlock.fontSize};
       --theme-codeBlock-padding: ${theme.codeBlock.padding};
       --theme-codeBlock-borderRadius: ${theme.codeBlock.borderRadius};
       --theme-blockquotes-color: ${theme.blockquotes.color};
@@ -261,13 +371,43 @@ export class MarkdownPreviewComponent implements OnInit {
     }
 
     .markdown h1,h2,h3,h4,h5,h6 {
-      color: ${theme.headers.color}; 
-      letter-spacing:${theme.headers.letterSpacing}px;
+      color: var(--theme-h-color); 
+      letter-spacing: var(--theme-h-letterSpacing)px;
       letter-spacing: ${eval('0.0625 * theme.headers.letterSpacing')}rem;
     }
     
     .markdown p {
-      color: ${theme.paragraph.color}; ${(theme.paragraph.letterSpacing == '0' ? '' : `\n      letter-spacing:${theme.paragraph.letterSpacing}px`)}  
+      color: var(--theme-p-color); 
+      letter-spacing: var(--theme-p-letterSpacing)px;
+      letter-spacing: ${eval('0.0625 * theme.paragraph.letterSpacing')}rem;
+    }
+
+    .markdown a {
+      color: var(--theme-a-color); 
+      letter-spacing: var(--theme-a-letterSpacing);
+      letter-spacing: ${eval('0.0625 * theme.anchors.letterSpacing')}rem;
+      font-weight: var(--theme-a-fontWeight);
+      text-decoration: var(--theme-a-textDecoration); 
+    }
+
+    .markdown code {
+
+    }
+
+    .markdown pre {
+
+    }
+
+    .markdown pre code {
+      color: var(--theme-codeInline-color)
+    }
+
+    .markdown blockquoote {
+
+    }
+
+    .markdown ul,ol {
+
     }
     `
   }
@@ -277,5 +417,17 @@ export class MarkdownPreviewComponent implements OnInit {
     const icon = target.querySelector('.icofont-rounded-down');
     icon?.classList.toggle('green-arrow');
     icon?.classList.toggle('icofont-rotate-270');
-  }  
+  }
+
+  // test() {
+  //   const a = this.markdownNativeElement.querySelectorAll('code')
+  //   for (let i = 0; i < a!.length; i++) {
+  //     a![i].style.color = 'blue';
+  //   }
+
+  //   const b = this.markdownNativeElement.querySelectorAll('pre code')
+  //   for (let i = 0; i < b!.length; i++) {
+  //     b![i].style.color = 'red';
+  //   }
+  // }
 } 
