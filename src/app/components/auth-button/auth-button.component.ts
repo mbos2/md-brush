@@ -1,6 +1,6 @@
 import { DOCUMENT } from '@angular/common';
 import { ElementRef } from '@angular/core';
-import { AfterViewInit, OnInit, ViewChild } from '@angular/core';
+import { AfterViewInit, ViewChild } from '@angular/core';
 import { Component, Inject } from '@angular/core';
 import { Auth0Service } from 'src/app/services/auth0.service';
 
@@ -9,17 +9,13 @@ import { Auth0Service } from 'src/app/services/auth0.service';
   templateUrl: './auth-button.component.html',
   styleUrls: ['./auth-button.component.sass']
 })
-export class AuthButtonComponent implements AfterViewInit, OnInit {
+export class AuthButtonComponent implements AfterViewInit {
   //@ts-ignore
   @ViewChild('loggedIn', { static: false }) private loggedIn: ElementRef<HTMLDivElement> | undefined;
   @ViewChild('loggedOut', { static: false }) private loggedOut: ElementRef<HTMLDivElement> | undefined;
   loader = this.document.querySelector('.loader') as HTMLElement;
   constructor(public auth: Auth0Service, @Inject(DOCUMENT) public document: Document) {
   
-  }
-
-  ngOnInit(): void {
-    return;
   }
 
   ngAfterViewInit(): void {

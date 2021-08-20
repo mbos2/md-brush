@@ -1,8 +1,10 @@
 import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
-import { AppComponent } from './app.component';
 import { MarkdownPreviewComponent } from './components/markdown-preview/markdown-preview.component';
+import { AuthenticationGuard } from './guards/auth-guard.guard';
 import { IndexComponent } from './pages/index/index.component';
+import { NotAuthorizedComponent } from './pages/not-authorized/not-authorized.component';
+import { NotFoundComponent } from './pages/not-found/not-found.component';
 
 const routes: Routes = [
   {
@@ -11,8 +13,18 @@ const routes: Routes = [
   },
   {
     path: 'generate',
-    component: MarkdownPreviewComponent
-  }
+    component: MarkdownPreviewComponent,
+    canActivate: [AuthenticationGuard]
+  },
+  {
+    path: 'not-found',
+    component: NotFoundComponent
+  },
+  {
+    path: 'not-authorized',
+    component: NotAuthorizedComponent
+  },
+  {path: '**', redirectTo: '/not-found'}
 ];
 
 @NgModule({

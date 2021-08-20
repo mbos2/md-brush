@@ -19,6 +19,8 @@ import { environment } from 'src/environments/environment';
 import { IndexComponent } from './pages/index/index.component';
 import { SecurityContext } from '@angular/core';
 import { FormsModule } from '@angular/forms';
+import { NotAuthorizedComponent } from './pages/not-authorized/not-authorized.component';
+import { NotFoundComponent } from './pages/not-found/not-found.component';
 
 @NgModule({
   declarations: [
@@ -27,6 +29,8 @@ import { FormsModule } from '@angular/forms';
     NavigationComponent,
     AuthButtonComponent,
     IndexComponent,
+    NotAuthorizedComponent,
+    NotFoundComponent,
   ],
   imports: [
     BrowserModule,

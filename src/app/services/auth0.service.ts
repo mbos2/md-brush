@@ -9,8 +9,8 @@ export class Auth0Service {
 
   constructor(private auth0: AuthService) { }
 
-  loginWithRedirect() {
-    return this.auth0.loginWithRedirect();
+  loginWIthPopup() {
+    return this.auth0.loginWithPopup();
   }
 
   logout(options?: any) {
