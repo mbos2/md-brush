@@ -9,7 +9,10 @@ export class Auth0Service {
 
   constructor(private auth0: AuthService) { }
 
-  loginWIthPopup() {
+  signUpWithPopup() {
+    return this.auth0.loginWithPopup({screen_hint: 'signup'});
+  }
+  signInWithPopup() {
     return this.auth0.loginWithPopup();
   }
 

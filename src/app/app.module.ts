@@ -21,6 +21,8 @@ import { SecurityContext } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { NotAuthorizedComponent } from './pages/not-authorized/not-authorized.component';
 import { NotFoundComponent } from './pages/not-found/not-found.component';
+import { SupabaseService } from './services/supabase.service';
+import { MyThemesComponent } from './pages/my-themes/my-themes.component';
 
 @NgModule({
   declarations: [
@@ -31,6 +33,7 @@ import { NotFoundComponent } from './pages/not-found/not-found.component';
     IndexComponent,
     NotAuthorizedComponent,
     NotFoundComponent,
+    MyThemesComponent,
   ],
   imports: [
     BrowserModule,
@@ -45,7 +48,7 @@ import { NotFoundComponent } from './pages/not-found/not-found.component';
     ClipboardModule,
     FormsModule,
   ],
-  providers: [Auth0Service],
+  providers: [Auth0Service, SupabaseService],
   bootstrap: [AppComponent]
 })
 export class AppModule { }

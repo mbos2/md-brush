@@ -1,12 +1,7 @@
 <section class="section">
   <section class="columns is-variable">
     <section class="column is-two-fifths pt-0">
-      <div
-        id="mdPreview"
-        class="md-preview md-preview-section"
-        (scroll)="onScroll($event, 'md-editor')"
-        #scrollOne
-      >
+      <div id="mdPreview" class="md-preview md-preview-section">
         <markdown
           #markdownContainer
           class="markdown md-preview-section p-1"
@@ -22,8 +17,6 @@
         [(ngModel)]="markdownRaw"
         [value]="markdownRaw"
         name="markdown-editor"
-        (scroll)="onScroll($event, 'mdPreview')"
-        #scrollTwo
       >
       </textarea>
     </section>
@@ -34,18 +27,21 @@
         style="overflow-y: scroll; max-height: 84vh; height: auto"
       >
         <header class="card-header">
-          <div class="css-button">
-            <button class="button is-primary is-small" (click)="openDialog()">
+          <div class="is-flex is-flex-direction-column">
+            <button
+              class="button is-success is-small mt-1"
+              (click)="openDialog()"
+            >
               GET CSS
             </button>
             <button
-              class="button ml-3 is-warning is-small"
-              (click)="resetForm()"
+              class="button is-info is-small mt-1"
+              (click)="openPreviewDialog()"
             >
               <span class="icon is-small is-size-7">
                 <i class="icofont-refresh"></i>
               </span>
-              <span class="ml-1 is-size-7 is-size-8-touch">RESET</span>
+              <span class="ml-1 is-size-7 is-size-8-touch">PREVIEW</span>
             </button>
           </div>
         </header>
@@ -122,7 +118,7 @@
                 id="color1"
                 class="input"
                 type="color"
-                value="markdownTheme.background"
+                [value]="markdownTheme.backgroundColor"
                 (change)="onMarkdownBackgroundColorChangeEvent($event)"
               />
 
@@ -162,7 +158,7 @@
               <input
                 class="input"
                 type="color"
-                value="markdownTheme.headers.color"
+                [value]="markdownTheme.headers.color"
                 (change)="onHeadersColorChangeEvent($event)"
               />
               <span class="divider"></span>
@@ -225,7 +221,7 @@
               <input
                 class="input"
                 type="color"
-                value="markdownTheme.paragraph.color"
+                [value]="markdownTheme.paragraph.color"
                 (change)="onParagraphColorChangeEvent($event)"
               />
               <span class="divider"></span>
@@ -287,7 +283,7 @@
               <input
                 class="input"
                 type="color"
-                value="markdownTheme.headers.color"
+                [value]="markdownTheme.anchors.color"
                 (change)="onAnchorsColorChangeEvent($event)"
               />
               <span class="divider"></span>
@@ -402,7 +398,7 @@
               <input
                 class="input"
                 type="color"
-                value="markdownTheme.codeInline.color"
+                [value]="markdownTheme.codeInline.color"
                 (change)="oninlineCodeColorChangeEvent($event)"
               />
               <span class="divider"></span>
@@ -416,7 +412,7 @@
               <input
                 class="input"
                 type="color"
-                value="markdownTheme.codeInline.backgroundColor"
+                [value]="markdownTheme.codeInline.backgroundColor"
                 (change)="oninlineBackgroundCodeColorChangeEvent($event)"
               />
 
@@ -549,7 +545,7 @@
               <input
                 class="input"
                 type="color"
-                value="markdownTheme.codeBlock.color"
+                [value]="markdownTheme.codeBlock.color"
                 (change)="onCodeBlockColorChangeEvent($event)"
               />
               <span class="divider"></span>
@@ -563,7 +559,7 @@
               <input
                 class="input"
                 type="color"
-                value="markdownTheme.codeBlock.backgroundColor"
+                [value]="markdownTheme.codeBlock.backgroundColor"
                 (change)="onCodeBlockBackgroundColorChangeEvent($event)"
               />
 
@@ -683,7 +679,107 @@
           ></span>
         </a>
         <div id="blockquote" class="is-collapsible">
-          <div class="card-content"></div>
+          <div class="card-content">
+            <label class="label has-text-weight-light">COLOR</label>
+            <div
+              class="
+                is-flex
+                is-flex-direction-row
+                is-justify-content-center
+                is-align-items-center
+              "
+            >
+              <input
+                class="input"
+                type="color"
+                [value]="markdownTheme.blockquotes.color"
+                (change)="onBlockquoteColorChangeEvent($event)"
+              />
+              <span class="divider"></span>
+              <span>{{ markdownTheme.blockquotes.color }}</span>
+            </div>
+            <hr />
+            <label class="label has-text-weight-light">BORDER COLOR</label>
+            <div
+              class="
+                is-flex
+                is-flex-direction-row
+                is-justify-content-center
+                is-align-items-center
+              "
+            >
+              <input
+                class="input"
+                type="color"
+                [value]="markdownTheme.blockquotes.borderLeftColor"
+                (change)="onBlockquoteBorderLeftColorChangeEvent($event)"
+              />
+              <span class="divider"></span>
+              <span>{{ markdownTheme.blockquotes.borderLeftColor }}</span>
+            </div>
+            <hr />
+            <label class="label has-text-weight-light">BORDER LEFT WIDTH</label>
+            <div
+              class="
+                is-flex
+                is-flex-direction-row
+                is-justify-content-center
+                is-align-items-center
+              "
+            >
+              <input
+                class="input"
+                type="number"
+                step="0.05"
+                [value]="markdownTheme.blockquotes.borderLeftWidth"
+                (change)="onBlockquoteBorderLeftWidthChangeEvent($event)"
+              />
+              <span class="divider"></span>
+              <span>{{ markdownTheme.blockquotes.borderLeftWidth }}px</span>
+            </div>
+            <hr />
+            <label class="label has-text-weight-light">PADDING LEFT</label>
+            <div
+              class="
+                is-flex
+                is-flex-direction-row
+                is-justify-content-center
+                is-align-items-center
+              "
+            >
+              <input
+                class="input"
+                type="number"
+                step="0.05"
+                [value]="markdownTheme.blockquotes.paddingLeft"
+                (change)="onBlockquotePaddingLeftChangeEvent($event)"
+              />
+              <span class="divider"></span>
+              <span>{{ markdownTheme.blockquotes.paddingLeft }}px</span>
+            </div>
+            <hr />
+            <label class="label mt-2 has-text-weight-light">ITALIC</label>
+            <div
+              class="
+                is-flex
+                is-flex-direction-row
+                is-justify-content-center
+                is-align-items-center
+              "
+            >
+              <div class="control has-icons-left">
+                <label class="checkbox">
+                  <input
+                    type="checkbox"
+                    [value]="markdownTheme.blockquotes.fontStyle"
+                    (change)="onBlockquoteFontStyleChangeEvent($event)"
+                  />
+                </label>
+              </div>
+              <span class="divider"></span>
+              <span>{{ markdownTheme.blockquotes.fontStyle }}</span>
+            </div>
+          </div>
         </div>
 
         <!--LISTS-->
@@ -704,7 +800,26 @@
           ></span>
         </a>
         <div id="lists" class="is-collapsible">
-          <div class="card-content"></div>
+          <div class="card-content">
+            <label class="label has-text-weight-light">TEXT COLOR</label>
+            <div
+              class="
+                is-flex
+                is-flex-direction-row
+                is-justify-content-center
+                is-align-items-center
+              "
+            >
+              <input
+                class="input"
+                type="color"
+                [value]="markdownTheme.lists.color"
+                (change)="onListColorChangeEvent($event)"
+              />
+              <span class="divider"></span>
+              <span>{{ markdownTheme.lists.color }}</span>
+            </div>
+          </div>
         </div>
       </div>
     </section>
@@ -729,5 +844,26 @@
         COPY TO CLIPBOARD
       </button>
     </footer>
+  </div>
+</div>
+
+<!-- PREVIEW MODAL -->
+<div class="modal modal-fx-full-screen" id="previewModal">
+  <div class="modal-background"></div>
+  <div class="modal-card">
+    <section class="modal-card-body">
+      <button
+        class="delete button is-dark"
+        (click)="closePreviewDialog()"
+      ></button>
+      <div class="container markdown" style="overflow-y: visible">
+        <markdown
+          class="markdown"
+          #markdownContainer
+          [data]="markdownRaw"
+          name="markdown-preview"
+        ></markdown>
+      </div>
+    </section>
   </div>
 </div>

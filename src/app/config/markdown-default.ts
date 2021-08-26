@@ -32,20 +32,14 @@ export const markdownDefaultConfig = {
     borderRadius: '0'//+
   },
   blockquotes: {
-    color: '',//+
-    backgroundColor: '',//+
-    italic: '',//+
-    bold: '',//+
-    underline: '',//+
-    paddingLeft: '',//+
-    borderLeftColor: '',//+
-    borderLeftWidth: ''//+
+    color: '#000000',
+    fontStyle: 'normal',
+    paddingLeft: '10',
+    borderLeftColor: '#757575',
+    borderLeftWidth: '3'
   },
   lists: {
-    color: '',//+
-    marginLeft: '',//+
-    paddingLeft: '',//+
-    markerColor: '',//+
+    color: '#000000',
   },
   helpers: {
     fontWeight: ['normal', 'bold'],

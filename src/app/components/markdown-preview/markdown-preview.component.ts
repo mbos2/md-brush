@@ -5,6 +5,7 @@ import { ViewChild } from '@angular/core';
 import { Clipboard } from '@angular/cdk/clipboard';
 import bulmaCollapsible from '@creativebulma/bulma-collapsible';
 import { markdownDefaultConfig } from '../../config/markdown-default';
+import { SupabaseService } from 'src/app/services/supabase.service';
 
 
 @Component({
@@ -15,8 +16,7 @@ import { markdownDefaultConfig } from '../../config/markdown-default';
   
 export class MarkdownPreviewComponent implements OnInit {
   @ViewChild('markdownContainer') private markdownContainer?: MarkdownComponent;
-  @ViewChild('scrollOne', {static: true}) scrollOne: ElementRef | undefined;
-  @ViewChild('scrollTwo') scrollTwo: ElementRef | undefined;
+
   private markdownNativeElement: any;
   cssString = '';
   markdownTheme = markdownDefaultConfig;
@@ -27,7 +27,6 @@ export class MarkdownPreviewComponent implements OnInit {
   panelOpenState = false;
   collapsibles: any;
 
-  // @HostListener('scroll', ['$event']) // for scroll events of the current element
   @HostListener('scroll', ['$event']) // for window scroll events
   onScroll(event: Event, updatedElementId: string) {
     const el = event.target as HTMLElement;
@@ -35,10 +34,10 @@ export class MarkdownPreviewComponent implements OnInit {
     secondElement!.scrollTop = el.scrollTop;
   }
 
-  constructor(private mdService: MarkdownService, private http: HttpClient, private clipboard: Clipboard) { }
+  constructor(private mdService: MarkdownService, private supabaseService: SupabaseService, private http: HttpClient, private clipboard: Clipboard) { }
 
   async ngOnInit() {
-    this.markdownRaw = await this.http.get('/assets/md/blog1.md', 
+    this.markdownRaw = await this.http.get('/assets/md/starter-template.md', 
       { responseType: 'text' }).toPromise();
     this.markdown = this.mdService.compile(this.markdownRaw);
     this.markdownNativeElement = this.markdownContainer?.element.nativeElement;
@@ -191,7 +190,7 @@ export class MarkdownPreviewComponent implements OnInit {
     this.markdownTheme.anchors.textDecoration = (isChecked == true) ? 'underline' : 'none';
     return this.anchorsTextDecorationChange(this.markdownTheme.anchors.textDecoration);
   }
-  //endregion
+  //#endregion
 
   //#region Inline code block
 
@@ -373,16 +372,94 @@ export class MarkdownPreviewComponent implements OnInit {
   }
   //#endregion
 
-  //#region Blockquote
+  //#region Blockquotes
+  
+  private blockquoteColorChange(color: string) {
+    const blockquotes = this.markdownNativeElement.querySelectorAll('blockquote');
+    for (let i = 0; i < blockquotes!.length; i++) {
+      blockquotes![i].style.color = color;
+    }
+  }
+
+  onBlockquoteColorChangeEvent($event: Event) {
+    const target = $event.target as HTMLInputElement;
+    this.markdownTheme.blockquotes.color = target.value;
+    return this.blockquoteColorChange(this.markdownTheme.blockquotes.color);
+  }
+
+  private blockquoteBorderLeftColorChange(color: string) {
+    const blockquotes = this.markdownNativeElement.querySelectorAll('blockquote');
+    for (let i = 0; i < blockquotes!.length; i++) {
+      blockquotes![i].style.borderLeftColor = color;
+    }
+  }
+
+  onBlockquoteBorderLeftColorChangeEvent($event: Event) {
+    const target = $event.target as HTMLInputElement;
+    this.markdownTheme.blockquotes.borderLeftColor = target.value;
+    return this.blockquoteBorderLeftColorChange(this.markdownTheme.blockquotes.borderLeftColor);
+  }
+
+  private blockquoteBorderLeftWidthChange(number: string) {
+    const blockquotes = this.markdownNativeElement.querySelectorAll('blockquote');
+    for (let i = 0; i < blockquotes!.length; i++) {
+      blockquotes![i].style.borderLeftWidth = `${number}px`;
+    }
+  }
+
+  onBlockquoteBorderLeftWidthChangeEvent($event: Event) {
+    const target = $event.target as HTMLInputElement;
+    this.markdownTheme.blockquotes.borderLeftWidth = target.value;
+    return this.blockquoteBorderLeftWidthChange(this.markdownTheme.blockquotes.borderLeftWidth);
+  }
+
+  private blockquotePaddingLeftChange(number: string) {
+    const blockquotes = this.markdownNativeElement.querySelectorAll('blockquote');
+    for (let i = 0; i < blockquotes!.length; i++) {
+      blockquotes![i].style.paddingLeft = `${number}px`;
+    }
+  }
+
+  onBlockquotePaddingLeftChangeEvent($event: Event) {
+    const target = $event.target as HTMLInputElement;
+    this.markdownTheme.blockquotes.paddingLeft = target.value;
+    return this.blockquotePaddingLeftChange(this.markdownTheme.blockquotes.paddingLeft);
+  }
+
+  private blockquoteFontStyleChange(value: string) {
+    const blockquotes = this.markdownNativeElement.querySelectorAll('blockquote');
+    for (let i = 0; i < blockquotes!.length; i++) {
+      blockquotes![i].style.fontStyle = value;
+    }
+  }
+
+  onBlockquoteFontStyleChangeEvent($event: Event) {
+    const target = $event.target as HTMLInputElement;
+    let isChecked = target.checked;
+    this.markdownTheme.blockquotes.fontStyle = (isChecked) ? 'italic' : 'normal';
+    console.log(this.markdownTheme.blockquotes.fontStyle)
+    return this.blockquoteFontStyleChange(this.markdownTheme.blockquotes.fontStyle);
+  }
 
   //#endregion
-
+  
   //#region List
+    private listColorChange(color: string) {
+      const list = this.markdownNativeElement.querySelectorAll('ol,ul');
+      for (let i = 0; i < list!.length; i++) {
+        list![i].style.color = color;      
+      }
+    }
 
+    onListColorChangeEvent($event: Event) {
+      const target = $event.target as HTMLInputElement;
+      this.markdownTheme.lists.color = target.value;
+      return this.listColorChange(this.markdownTheme.lists.color);
+    }  
   //#endregion
 
   //#endregion
-
+  
   openDialog() {
     this.generateCss();
     document.getElementById('myModal')?.classList.add('is-active');
@@ -392,9 +469,23 @@ export class MarkdownPreviewComponent implements OnInit {
     document.getElementById('myModal')?.classList.remove('is-active');
   }
 
+  openPreviewDialog() {
+    this.generateCss();
+    document.getElementById('previewModal')?.classList.add('is-active');
+    let preview = document.getElementById('previewModal');
+    let css = document.createElement('style');
+    css.innerHTML = `${this.cssString}`;
+    preview?.appendChild(css);
+  }
+
+  closePreviewDialog() {
+    document.getElementById('previewModal')?.classList.remove('is-active');
+  }
+
   copyCss() {
     const css = document.querySelector('#css-code')?.textContent as string;
-    return this.clipboard.copy(css);
+    this.supabaseService.selectAllThemes().then(data => {console.log(data.body)});
+    return this.clipboard.copy(css);    
   }
 
   resetForm() {
@@ -432,17 +523,11 @@ export class MarkdownPreviewComponent implements OnInit {
       --theme-codeBlock-paddingY: ${theme.codeBlock.paddingY}px;
       --theme-codeBlock-borderRadius: ${theme.codeBlock.borderRadius}px;
       --theme-blockquotes-color: ${theme.blockquotes.color};
-      --theme-blockquotes-backgroundColor: ${theme.blockquotes.backgroundColor};
-      --theme-blockquotes-italic: ${theme.blockquotes.italic};
-      --theme-blockquotes-bold: ${theme.blockquotes.bold};
-      --theme-blockquotes-underline: ${theme.blockquotes.underline};
+      --theme-blockquotes-fontStyle: ${theme.blockquotes.fontStyle};
       --theme-blockquotes-paddingLeft: ${theme.blockquotes.paddingLeft}px;
       --theme-blockquotes-borderLeftColor: ${theme.blockquotes.borderLeftColor};
       --theme-blockquotes-borderLeftWidth: ${theme.blockquotes.borderLeftWidth};
       --theme-list-color: ${theme.lists.color};
-      --theme-list-marginLeft: ${theme.lists.marginLeft}px;
-      --theme-list-paddingLeft: ${theme.lists.paddingLeft}px;
-      --theme-list-markerColor: ${theme.lists.markerColor};
     }
 
     .markdown {
@@ -491,15 +576,27 @@ export class MarkdownPreviewComponent implements OnInit {
 
     .markdown pre code {
       color: var(--theme-codeBlock-color);
-      background-color: var(--theme-codeBlock-backgroundColor);
+      background-color: var(--theme-codeInline-backgroundColor);
     }
 
     .markdown blockquoote {
-
+      color: var(--theme-blockquotes-color);
+      font-style: var(--theme-blockquotes-fontStyle);
+      padding-left: var(--theme-blockquotes-paddingLeft);
+      border-left-color: var(--theme-blockquotes-borderLeftColor);
+      border-left-width: var(--theme-blockquotes-borderLeftWidth);
     }
 
     .markdown ul,ol {
+      color: var(--theme-list-color);
+    }
 
+    .markdown ul::before {
+      color: var(--theme-list-markerColor);      
+    }
+
+    .markdown ol::before {
+      color: var(--theme-list-markerColor);
     }
     `
   }
@@ -510,16 +607,4 @@ export class MarkdownPreviewComponent implements OnInit {
     icon?.classList.toggle('green-arrow');
     icon?.classList.toggle('icofont-rotate-270');
   }
-
-  // test() {
-  //   const a = this.markdownNativeElement.querySelectorAll('code')
-  //   for (let i = 0; i < a!.length; i++) {
-  //     a![i].style.color = 'blue';
-  //   }
-
-  //   const b = this.markdownNativeElement.querySelectorAll('pre code')
-  //   for (let i = 0; i < b!.length; i++) {
-  //     b![i].style.color = 'red';
-  //   }
-  // }
 } 
