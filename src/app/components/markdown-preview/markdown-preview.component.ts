@@ -6,6 +6,7 @@ import { Clipboard } from '@angular/cdk/clipboard';
 import bulmaCollapsible from '@creativebulma/bulma-collapsible';
 import { markdownDefaultConfig } from '../../config/markdown-default';
 import { SupabaseService } from 'src/app/services/supabase.service';
+import { ActivatedRoute } from '@angular/router';
 
 
 @Component({
@@ -16,7 +17,7 @@ import { SupabaseService } from 'src/app/services/supabase.service';
   
 export class MarkdownPreviewComponent implements OnInit {
   @ViewChild('markdownContainer') private markdownContainer?: MarkdownComponent;
-
+  id: string | null;
   private markdownNativeElement: any;
   cssString = '';
   markdownTheme = markdownDefaultConfig;
@@ -34,9 +35,17 @@ export class MarkdownPreviewComponent implements OnInit {
     secondElement!.scrollTop = el.scrollTop;
   }
 
-  constructor(private mdService: MarkdownService, private supabaseService: SupabaseService, private http: HttpClient, private clipboard: Clipboard) { }
+  constructor(private mdService: MarkdownService, private supabaseService: SupabaseService, private http: HttpClient, private clipboard: Clipboard, private route: ActivatedRoute) {
+    const routeParams = this.route.snapshot.paramMap;
+    this.id = routeParams.get('id');
+  }
 
   async ngOnInit() {
+    this.supabaseService.selectThemeById(this.id!)
+      .then(data => {
+        console.log(data);
+      })
+    
     this.markdownRaw = await this.http.get('/assets/md/starter-template.md', 
       { responseType: 'text' }).toPromise();
     this.markdown = this.mdService.compile(this.markdownRaw);
@@ -484,7 +493,6 @@ export class MarkdownPreviewComponent implements OnInit {
 
   copyCss() {
     const css = document.querySelector('#css-code')?.textContent as string;
-    this.supabaseService.selectAllThemes().then(data => {console.log(data.body)});
     return this.clipboard.copy(css);    
   }
 

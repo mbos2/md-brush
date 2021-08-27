@@ -18,11 +18,13 @@ import { Auth0Service } from './services/auth0.service';
 import { environment } from 'src/environments/environment';
 import { IndexComponent } from './pages/index/index.component';
 import { SecurityContext } from '@angular/core';
-import { FormsModule } from '@angular/forms';
+import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { NotAuthorizedComponent } from './pages/not-authorized/not-authorized.component';
 import { NotFoundComponent } from './pages/not-found/not-found.component';
 import { SupabaseService } from './services/supabase.service';
 import { MyThemesComponent } from './pages/my-themes/my-themes.component';
+import { NewThemeComponent } from './pages/new-theme/new-theme.component';
+import { ThemeContainerComponent } from './components/theme-container/theme-container.component';
 
 @NgModule({
   declarations: [
@@ -34,6 +36,8 @@ import { MyThemesComponent } from './pages/my-themes/my-themes.component';
     NotAuthorizedComponent,
     NotFoundComponent,
     MyThemesComponent,
+    NewThemeComponent,
+    ThemeContainerComponent,
   ],
   imports: [
     BrowserModule,
@@ -47,6 +51,7 @@ import { MyThemesComponent } from './pages/my-themes/my-themes.component';
     }), 
     ClipboardModule,
     FormsModule,
+    ReactiveFormsModule,
   ],
   providers: [Auth0Service, SupabaseService],
   bootstrap: [AppComponent]

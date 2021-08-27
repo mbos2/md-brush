@@ -1,0 +1,20 @@
+<section
+  class="container is-flex is-justify-content-center is-align-items-center"
+>
+  <form class="box" style="width: 60%" (submit)="createTheme()">
+    <div class="field">
+      <label class="label has-text-centered" for="name">THEME NAME</label>
+      <div class="control">
+        <input
+          class="input"
+          type="email"
+          placeholder="e.g. Default-1"
+          required
+          [formControl]="name"
+        />
+      </div>
+    </div>
+
+    <button class="button is-primary">Create theme</button>
+  </form>
+</section>

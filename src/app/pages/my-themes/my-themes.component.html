@@ -1,1 +1,5 @@
-<p>my-themes works!</p>
+<div class="container">
+  <div *ngFor="let theme of themes" class="">
+    <app-theme-container [theme]="theme"> </app-theme-container>
+  </div>
+</div>
