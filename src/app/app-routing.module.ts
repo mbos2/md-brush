@@ -2,6 +2,7 @@ import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
 import { MarkdownPreviewComponent } from './components/markdown-preview/markdown-preview.component';
 import { AuthenticationGuard } from './guards/auth-guard.guard';
+import { ExploreComponent } from './pages/explore/explore.component';
 import { IndexComponent } from './pages/index/index.component';
 import { MyThemesComponent } from './pages/my-themes/my-themes.component';
 import { NewThemeComponent } from './pages/new-theme/new-theme.component';
@@ -16,12 +17,15 @@ const routes: Routes = [
   {
     path: 'theme/:id',
     component: MarkdownPreviewComponent,
-    canActivate: [AuthenticationGuard]
   },
   {
     path: 'new',
     component: NewThemeComponent,
     canActivate: [AuthenticationGuard]
+  },
+  {
+    path: 'explore',
+    component: ExploreComponent,
   },
   {
     path: 'my-themes',

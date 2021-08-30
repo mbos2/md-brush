@@ -25,6 +25,8 @@ import { SupabaseService } from './services/supabase.service';
 import { MyThemesComponent } from './pages/my-themes/my-themes.component';
 import { NewThemeComponent } from './pages/new-theme/new-theme.component';
 import { ThemeContainerComponent } from './components/theme-container/theme-container.component';
+import { ExploreComponent } from './pages/explore/explore.component';
+import { PublicThemeContainerComponent } from './components/public-theme-container/public-theme-container.component';
 
 @NgModule({
   declarations: [
@@ -38,6 +40,8 @@ import { ThemeContainerComponent } from './components/theme-container/theme-cont
     MyThemesComponent,
     NewThemeComponent,
     ThemeContainerComponent,
+    ExploreComponent,
+    PublicThemeContainerComponent,
   ],
   imports: [
     BrowserModule,

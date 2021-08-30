@@ -1,0 +1,31 @@
+.theme
+  height: 150px
+  width: fit-content
+  display: flex
+  border-top-left-radius: 15px
+  border-top-right-radius: 15px
+  .theme-block
+    width: 100%
+    display: flex
+    justify-content: center
+    align-items: center
+    padding: 0.5rem
+    transition: all 0.2s linear
+    span
+      display: none
+      opacity: 0
+      padding: 0.5rem
+    &:hover
+      width: 135%
+    &:hover span
+      display: block
+      opacity: 1
+
+.theme > .theme-block:first-child
+  border-top-left-radius: 15px
+
+.theme > .theme-block:last-child
+  border-top-right-radius: 15px
+
+.title
+  gap: 5px

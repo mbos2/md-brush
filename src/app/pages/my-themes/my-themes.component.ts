@@ -9,11 +9,8 @@ import { SupabaseService } from 'src/app/services/supabase.service';
   styleUrls: ['./my-themes.component.sass']
 })
 export class MyThemesComponent implements OnInit {
-
   userId: any;
-  themes: any;
-
-  
+  themes: any;  
   constructor(private supabaseService: SupabaseService, private auth0: Auth0Service) {
     this.auth0.user$.subscribe(user => {
       return this.userId = user?.sub;

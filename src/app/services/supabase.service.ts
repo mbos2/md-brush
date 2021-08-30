@@ -64,7 +64,7 @@ export class SupabaseService {
   async publishTheme(themeId: string, isPublic: any) {
     return await this.supabase
       .from('mdThemes')
-      .update({ isPublish: isPublic })
+      .update({ isPublic: isPublic })
       .eq('id', themeId);
   }
 

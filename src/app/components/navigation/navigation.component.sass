@@ -27,6 +27,12 @@ nav
     left: 0
     background-color: #80ffcc
 
+.link-no-after
+  position: relative
+  text-decoration: none
+  letter-spacing: 0.05rem
+  font-size: 1.25rem
+
 .navbar-item img
   width: 4.5rem
   height: 4.5rem
@@ -78,3 +84,28 @@ nav
     fill: rgb(0, 46, 77)
   100%
     fill: #2FDF84
+
+.pulse
+  border-radius: 25px
+  animation-name: pulse
+  animation-duration: 1s
+  animation-timing-function: ease-out
+  animation-delay: 0
+  animation-direction: alternate
+  animation-iteration-count: infinite
+  animation-fill-mode: none
+  animation-play-state: running
+  transition: 0.2s
+  &:hover
+    transform: scale(1.1)
+
+@keyframes pulse
+  0%
+    -webkit-box-shadow: 0px 0px 5px 0px rgba(47,223,132,1)
+    -moz-box-shadow: 0px 0px 5px 0px rgba(47,223,132,1)
+    box-shadow: 0px 0px 5px 0px rgba(47,223,132,1)
+
+  100%
+    -webkit-box-shadow: 0px 0px 5px 5px rgba(47,223,132,1)
+    -moz-box-shadow: 0px 0px 5px 5px rgba(47,223,132,1)
+    box-shadow: 0px 0px 5px 5px rgba(47,223,132,1)

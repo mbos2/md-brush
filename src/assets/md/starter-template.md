@@ -56,17 +56,18 @@ export  class  AuthenticationGuard  implements  CanActivate {
 	constructor(private  auth0: AuthService, private  router: Router) {}
 
 	canActivate(
-		route: ActivatedRouteSnapshot,
-		state: RouterStateSnapshot): Observable<boolean | UrlTree> | Promise<boolean | UrlTree> | boolean | UrlTree {
-			return  this.auth0.isAuthenticated$.pipe(
-				map(e  => {
-					if (!e) {
-						return  this.router.parseUrl('/not-authorized');
-					}
-					return  true;
-				}),
-			);
-		}
+	route: ActivatedRouteSnapshot,
+	state: RouterStateSnapshot):
+  Observable<boolean | UrlTree> | Promise<boolean | UrlTree> | boolean | UrlTree {
+		return  this.auth0.isAuthenticated$.pipe(
+			map(e  => {
+				if (!e) {
+					return  this.router.parseUrl('/not-authorized');
+				}
+				return  true;
+			}),
+		);
+	}
 }
 ```
 

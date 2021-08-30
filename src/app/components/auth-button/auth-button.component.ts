@@ -33,8 +33,6 @@ export class AuthButtonComponent implements AfterViewInit {
       if (user === null || user == null) {
         console.log('User is null')
       }
-      console.log(user);
-      console.log(document.querySelector('.dropdown'))
     })
 
     let dropdown = document.querySelector('.dropdown')!;

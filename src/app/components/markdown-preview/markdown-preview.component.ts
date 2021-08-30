@@ -7,6 +7,7 @@ import bulmaCollapsible from '@creativebulma/bulma-collapsible';
 import { markdownDefaultConfig } from '../../config/markdown-default';
 import { SupabaseService } from 'src/app/services/supabase.service';
 import { ActivatedRoute } from '@angular/router';
+import { Auth0Service } from 'src/app/services/auth0.service';
 
 
 @Component({
@@ -28,6 +29,7 @@ export class MarkdownPreviewComponent implements OnInit {
   panelOpenState = false;
   collapsibles: any;
   fontFamily: any;
+  isThemeOwner = false;
 
   @HostListener('scroll', ['$event']) // for window scroll events
   onScroll(event: Event, updatedElementId: string) {
@@ -36,12 +38,28 @@ export class MarkdownPreviewComponent implements OnInit {
     secondElement!.scrollTop = el.scrollTop;
   }
 
-  constructor(private mdService: MarkdownService, private supabaseService: SupabaseService, private http: HttpClient, private clipboard: Clipboard, private route: ActivatedRoute) {
+  constructor(private mdService: MarkdownService, private supabaseService: SupabaseService, private http: HttpClient, private clipboard: Clipboard, private route: ActivatedRoute, private auth0: Auth0Service) {
     const routeParams = this.route.snapshot.paramMap;
     this.id = routeParams.get('id');    
   }
 
   async ngOnInit() {
+    this.auth0.user$.subscribe(user => {
+      if (user === null || user == null) {
+        return console.log('User is not authenthicated')
+      }
+      const theme = this.supabaseService.selectThemeById(this.id as string)
+        .then(data => {
+          console.log(data.body![0].userId, user.sub)
+          if (user.sub === data.body![0].userId) {
+            console.log('owner')
+            this.isThemeOwner = true;
+          } else {
+            console.log('not owner')
+            this.isThemeOwner = false;
+          }
+        });   
+    })
     const theme = await this.supabaseService.selectThemeById(this.id!)
     this.id = theme.body![0].id;
     this.markdownTheme = JSON.parse(theme.body![0].themeObject);
@@ -545,7 +563,7 @@ export class MarkdownPreviewComponent implements OnInit {
       --theme-a-color: ${theme.anchors.color};
       --theme-a-letterSpacing: ${theme.anchors.letterSpacing}px;
       --theme-a-textDecoration: ${theme.anchors.textDecoration};
-      --theme-a-fontWeight: ${theme.anchors.fontWeight}px;
+      --theme-a-fontWeight: ${theme.anchors.fontWeight};
       --theme-codeInline-color: ${theme.codeInline.color};
       --theme-codeInline-backgroundColor: ${theme.codeInline.backgroundColor};
       --theme-codeInline-fontWeight: ${theme.codeInline.fontWeight}px;
@@ -561,7 +579,7 @@ export class MarkdownPreviewComponent implements OnInit {
       --theme-blockquotes-fontStyle: ${theme.blockquotes.fontStyle};
       --theme-blockquotes-paddingLeft: ${theme.blockquotes.paddingLeft}px;
       --theme-blockquotes-borderLeftColor: ${theme.blockquotes.borderLeftColor};
-      --theme-blockquotes-borderLeftWidth: ${theme.blockquotes.borderLeftWidth};
+      --theme-blockquotes-borderLeftWidth: ${theme.blockquotes.borderLeftWidth}px;
       --theme-list-color: ${theme.lists.color};
     }
 
@@ -607,6 +625,7 @@ export class MarkdownPreviewComponent implements OnInit {
       padding-right: var(--theme-codeBlock-paddingX);
       padding-top: var(--theme-codeBlock-paddingY);
       padding-bottom: var(--theme-codeBlock-paddingY);
+      line-height: 2;
     }
 
     .markdown pre code {
@@ -614,7 +633,7 @@ export class MarkdownPreviewComponent implements OnInit {
       background-color: var(--theme-codeInline-backgroundColor);
     }
 
-    .markdown blockquoote {
+    .markdown blockquote {
       color: var(--theme-blockquotes-color);
       font-style: var(--theme-blockquotes-fontStyle);
       padding-left: var(--theme-blockquotes-paddingLeft);
@@ -622,7 +641,7 @@ export class MarkdownPreviewComponent implements OnInit {
       border-left-width: var(--theme-blockquotes-borderLeftWidth);
     }
 
-    .markdown blockquoote p {
+    .markdown blockquote p {
       color: var(--theme-blockquotes-color);
     }
 

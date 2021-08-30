@@ -1,0 +1,29 @@
+<div class="card">
+  <header class="is-flex is-justify-content-center is-align-items-center">
+    <span
+      class="title p-2 is-flex is-justify-content-center is-align-items-center"
+      >{{ theme.name }}
+    </span>
+  </header>
+
+  <div class="theme" style="width: 100%">
+    <div
+      *ngFor="let color of themeColors"
+      [ngStyle]="{ 'background-color': color }"
+      class="theme-block"
+      (mouseenter)="invertSpanColor($event)"
+    >
+      <span>
+        {{ color }}
+      </span>
+    </div>
+  </div>
+
+  <footer class="card-footer">
+    <a
+      [routerLink]="['/theme', theme.id]"
+      class="card-footer-item button is-info is-small"
+      >Preview</a
+    >
+  </footer>
+</div>
