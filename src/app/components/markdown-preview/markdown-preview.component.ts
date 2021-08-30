@@ -27,6 +27,7 @@ export class MarkdownPreviewComponent implements OnInit {
   typescriptMarkdown: any;
   panelOpenState = false;
   collapsibles: any;
+  fontFamily: any;
 
   @HostListener('scroll', ['$event']) // for window scroll events
   onScroll(event: Event, updatedElementId: string) {
@@ -37,14 +38,13 @@ export class MarkdownPreviewComponent implements OnInit {
 
   constructor(private mdService: MarkdownService, private supabaseService: SupabaseService, private http: HttpClient, private clipboard: Clipboard, private route: ActivatedRoute) {
     const routeParams = this.route.snapshot.paramMap;
-    this.id = routeParams.get('id');
+    this.id = routeParams.get('id');    
   }
 
   async ngOnInit() {
-    this.supabaseService.selectThemeById(this.id!)
-      .then(data => {
-        console.log(data);
-      })
+    const theme = await this.supabaseService.selectThemeById(this.id!)
+    this.id = theme.body![0].id;
+    this.markdownTheme = JSON.parse(theme.body![0].themeObject);
     
     this.markdownRaw = await this.http.get('/assets/md/starter-template.md', 
       { responseType: 'text' }).toPromise();
@@ -52,7 +52,12 @@ export class MarkdownPreviewComponent implements OnInit {
     this.markdownNativeElement = this.markdownContainer?.element.nativeElement;
 
     this.collapsibles = bulmaCollapsible.attach(".is-collapsible");
-    document.body.style.overflow = 'hidden';    
+    document.body.style.overflow = 'hidden';
+    
+    this.fontFamily = this.markdownTheme.fontFamily;
+    setTimeout(() => {
+      this.setTheme();      
+    }, 1);
   }
 
   getMarkdownContentValue(event: Event): string {
@@ -70,7 +75,8 @@ export class MarkdownPreviewComponent implements OnInit {
   onMarkdownFontFamilyChangeEvent($event: Event) {
     const target = $event.target as HTMLInputElement;
     this.markdownTheme.fontFamily = target.value;
-    return this.markdownFontFamilyChange(this.markdownTheme.fontFamily);
+    this.markdownFontFamilyChange(this.markdownTheme.fontFamily);
+    return this.supabaseService.updateThemeObjectOnChange(this.id, JSON.stringify(this.markdownTheme))
   }
   //#endregion
 
@@ -83,14 +89,15 @@ export class MarkdownPreviewComponent implements OnInit {
   onMarkdownBackgroundColorChangeEvent($event: Event) {    
     const target = $event.target as HTMLInputElement;
     this.markdownTheme.backgroundColor = target.value;
-    return this.markdownBackgroundColorChange(this.markdownTheme.backgroundColor);
+    this.markdownBackgroundColorChange(this.markdownTheme.backgroundColor);
+    return this.supabaseService.updateThemeObjectOnChange(this.id, JSON.stringify(this.markdownTheme))
   }
   //#endregion
 
   //#region Headers
   headersColorChange(color: string) {
     const headers = this.markdownNativeElement.querySelectorAll('h1,h2,h3,h4,h5,h6');
-    for (let i = 0; i <= headers!.length; i++) {
+    for (let i = 0; i < headers!.length; i++) {
       headers![i].style.color = color;
     }
   }
@@ -98,7 +105,8 @@ export class MarkdownPreviewComponent implements OnInit {
   onHeadersColorChangeEvent($event: Event) {
     const target = $event.target as HTMLInputElement;
     this.markdownTheme.headers.color = target.value;
-    return this.headersColorChange(this.markdownTheme.headers.color);
+    this.headersColorChange(this.markdownTheme.headers.color);
+    return this.supabaseService.updateThemeObjectOnChange(this.id, JSON.stringify(this.markdownTheme));
   }
 
   headersLetterSpacingChange(number: string) {
@@ -111,7 +119,8 @@ export class MarkdownPreviewComponent implements OnInit {
   onHeadersLetterSpacingChangeEvent($event: Event) {
     const target = $event.target as HTMLInputElement;
     this.markdownTheme.headers.letterSpacing = target.value;
-    return this.headersLetterSpacingChange(this.markdownTheme.headers.letterSpacing);
+    this.headersLetterSpacingChange(this.markdownTheme.headers.letterSpacing);
+    return this.supabaseService.updateThemeObjectOnChange(this.id, JSON.stringify(this.markdownTheme))
   }
 
   //#endregion
@@ -119,7 +128,7 @@ export class MarkdownPreviewComponent implements OnInit {
   //#region Paragraphs
   private paragraphColorChange(color: string) {
     const paragraphs = this.markdownNativeElement.querySelectorAll('p');
-    for (let i = 0; i <= paragraphs!.length; i++) {
+    for (let i = 0; i < paragraphs!.length; i++) {
       paragraphs[i].style.color = color;      
     }
   }
@@ -127,12 +136,13 @@ export class MarkdownPreviewComponent implements OnInit {
   onParagraphColorChangeEvent($event: Event) {
     const target = $event.target as HTMLInputElement;
     this.markdownTheme.paragraph.color = target.value;
-    return this.paragraphColorChange(this.markdownTheme.paragraph.color);
+    this.paragraphColorChange(this.markdownTheme.paragraph.color);
+    return this.supabaseService.updateThemeObjectOnChange(this.id, JSON.stringify(this.markdownTheme))
   }
 
   private paragraphLetterSpacingChange(number: string) {
     const paragraphs = this.markdownNativeElement.querySelectorAll('p');
-    for (let i = 0; i <= paragraphs!.length; i++) {
+    for (let i = 0; i < paragraphs!.length; i++) {
       paragraphs[i].style.letterSpacing = `${number}px`;
     }
   }
@@ -140,7 +150,8 @@ export class MarkdownPreviewComponent implements OnInit {
   onParagraphLetterSpacingChangeEvent($event: Event) {
     const target = $event.target as HTMLInputElement;
     this.markdownTheme.paragraph.letterSpacing = target.value;
-    return this.paragraphLetterSpacingChange(this.markdownTheme.paragraph.letterSpacing);
+    this.paragraphLetterSpacingChange(this.markdownTheme.paragraph.letterSpacing);
+    return this.supabaseService.updateThemeObjectOnChange(this.id, JSON.stringify(this.markdownTheme))
   }
   //#endregion
 
@@ -156,7 +167,8 @@ export class MarkdownPreviewComponent implements OnInit {
   onAnchorsColorChangeEvent($event: Event) {
     const target = $event.target as HTMLInputElement;
     this.markdownTheme.anchors.color = target.value;
-    return this.anchorsColorChange(this.markdownTheme.anchors.color);
+    this.anchorsColorChange(this.markdownTheme.anchors.color);
+    return this.supabaseService.updateThemeObjectOnChange(this.id, JSON.stringify(this.markdownTheme))
   }
 
 
@@ -170,7 +182,8 @@ export class MarkdownPreviewComponent implements OnInit {
   onAnchorsLetterSpacingChangeEvent($event: Event) {
     const target = $event.target as HTMLInputElement;
     this.markdownTheme.anchors.letterSpacing = target.value;
-    return this.anchorLetterSpacingChange(this.markdownTheme.anchors.letterSpacing);
+    this.anchorLetterSpacingChange(this.markdownTheme.anchors.letterSpacing);
+    return this.supabaseService.updateThemeObjectOnChange(this.id, JSON.stringify(this.markdownTheme))
   }
 
   private anchorsFontWeightChange(number: string) {
@@ -183,7 +196,8 @@ export class MarkdownPreviewComponent implements OnInit {
   onAnchorsFontWeightChangeEvent($event: Event) {
     const target = $event.target as HTMLInputElement;
     this.markdownTheme.anchors.fontWeight = target.value;
-    return this.anchorsFontWeightChange(this.markdownTheme.anchors.fontWeight);
+    this.anchorsFontWeightChange(this.markdownTheme.anchors.fontWeight);
+    return this.supabaseService.updateThemeObjectOnChange(this.id, JSON.stringify(this.markdownTheme))
   }
 
   private anchorsTextDecorationChange(string: string) {
@@ -197,7 +211,8 @@ export class MarkdownPreviewComponent implements OnInit {
     const target = $event.target as HTMLInputElement;
     let isChecked = target.checked;
     this.markdownTheme.anchors.textDecoration = (isChecked == true) ? 'underline' : 'none';
-    return this.anchorsTextDecorationChange(this.markdownTheme.anchors.textDecoration);
+    this.anchorsTextDecorationChange(this.markdownTheme.anchors.textDecoration);
+    return this.supabaseService.updateThemeObjectOnChange(this.id, JSON.stringify(this.markdownTheme))
   }
   //#endregion
 
@@ -215,7 +230,8 @@ export class MarkdownPreviewComponent implements OnInit {
   oninlineCodeColorChangeEvent($event: Event) {
     const target = $event.target as HTMLInputElement;
     this.markdownTheme.codeInline.color = target.value;
-    return this.inlineCodeColorChange(this.markdownTheme.codeInline.color);
+    this.inlineCodeColorChange(this.markdownTheme.codeInline.color);
+    return this.supabaseService.updateThemeObjectOnChange(this.id, JSON.stringify(this.markdownTheme))
   }
 
   private inlineCodeBackgroundColorChange(color: string) {
@@ -230,7 +246,8 @@ export class MarkdownPreviewComponent implements OnInit {
   oninlineBackgroundCodeColorChangeEvent($event: Event) {
     const target = $event.target as HTMLInputElement;
     this.markdownTheme.codeInline.backgroundColor = target.value;
-    return this.inlineCodeBackgroundColorChange(this.markdownTheme.codeInline.backgroundColor);
+    this.inlineCodeBackgroundColorChange(this.markdownTheme.codeInline.backgroundColor);
+    return this.supabaseService.updateThemeObjectOnChange(this.id, JSON.stringify(this.markdownTheme))
   }
 
   private inlineCodeFontWeightChange(fontWeight: string) {
@@ -245,7 +262,8 @@ export class MarkdownPreviewComponent implements OnInit {
   oninlineCodeFontWeightChangeEvent($event: Event) {
     const target = $event.target as HTMLInputElement;
     this.markdownTheme.codeInline.fontWeight = target.value;
-    return this.inlineCodeFontWeightChange(this.markdownTheme.codeInline.fontWeight);
+    this.inlineCodeFontWeightChange(this.markdownTheme.codeInline.fontWeight);
+    return this.supabaseService.updateThemeObjectOnChange(this.id, JSON.stringify(this.markdownTheme))
   }
 
   private inlineCodeBorderRadiusChange(number: string) {
@@ -260,7 +278,8 @@ export class MarkdownPreviewComponent implements OnInit {
   oninlineCodeBorderRadiusEvent($event: Event) {
     const target = $event.target as HTMLInputElement;
     this.markdownTheme.codeInline.borderRadius = target.value;
-    return this.inlineCodeBorderRadiusChange(this.markdownTheme.codeInline.borderRadius);
+    this.inlineCodeBorderRadiusChange(this.markdownTheme.codeInline.borderRadius);
+    return this.supabaseService.updateThemeObjectOnChange(this.id, JSON.stringify(this.markdownTheme))
   }
 
   private inlineCodePaddingXChange(number: string) {
@@ -276,7 +295,8 @@ export class MarkdownPreviewComponent implements OnInit {
   oninlineCodePaddingXEvent($event: Event) {
     const target = $event.target as HTMLInputElement;
     this.markdownTheme.codeInline.paddingX = target.value;
-    return this.inlineCodePaddingXChange(this.markdownTheme.codeInline.paddingX);
+    this.inlineCodePaddingXChange(this.markdownTheme.codeInline.paddingX);
+    return this.supabaseService.updateThemeObjectOnChange(this.id, JSON.stringify(this.markdownTheme))
   }
 
   private inlineCodePaddingYChange(number: string) {
@@ -292,10 +312,9 @@ export class MarkdownPreviewComponent implements OnInit {
   oninlineCodePaddingYEvent($event: Event) {
     const target = $event.target as HTMLInputElement;
     this.markdownTheme.codeInline.paddingY = target.value;
-    return this.inlineCodePaddingYChange(this.markdownTheme.codeInline.paddingY);
+    this.inlineCodePaddingYChange(this.markdownTheme.codeInline.paddingY);
+    return this.supabaseService.updateThemeObjectOnChange(this.id, JSON.stringify(this.markdownTheme))
   }
-
-
   //#endregion
 
   //#region Pre Code block
@@ -310,7 +329,8 @@ export class MarkdownPreviewComponent implements OnInit {
   onCodeBlockColorChangeEvent($event: Event) {
     const target = $event.target as HTMLInputElement;
     this.markdownTheme.codeBlock.color = target.value;
-    return this.codeBlockColorChange(this.markdownTheme.codeBlock.color);
+    this.codeBlockColorChange(this.markdownTheme.codeBlock.color);
+    return this.supabaseService.updateThemeObjectOnChange(this.id, JSON.stringify(this.markdownTheme))
   }
 
   private codeBlockBackgroundColorChange(color: string) {
@@ -323,7 +343,8 @@ export class MarkdownPreviewComponent implements OnInit {
   onCodeBlockBackgroundColorChangeEvent($event: Event) {
     const target = $event.target as HTMLInputElement;
     this.markdownTheme.codeBlock.backgroundColor = target.value;
-    return this.codeBlockBackgroundColorChange(this.markdownTheme.codeBlock.backgroundColor);
+    this.codeBlockBackgroundColorChange(this.markdownTheme.codeBlock.backgroundColor);
+    return this.supabaseService.updateThemeObjectOnChange(this.id, JSON.stringify(this.markdownTheme))
   }
 
   private codeBlockFontWeightChange(fontWeight: string) {
@@ -336,7 +357,8 @@ export class MarkdownPreviewComponent implements OnInit {
   onCodeBlockFontWeightChangeEvent($event: Event) {
     const target = $event.target as HTMLInputElement;
     this.markdownTheme.codeBlock.fontWeight = target.value;
-    return this.codeBlockFontWeightChange(this.markdownTheme.codeBlock.fontWeight);
+    this.codeBlockFontWeightChange(this.markdownTheme.codeBlock.fontWeight);
+    return this.supabaseService.updateThemeObjectOnChange(this.id, JSON.stringify(this.markdownTheme))
   }
 
   private codeBlockBorderRadiusChange(number: string) {
@@ -349,7 +371,8 @@ export class MarkdownPreviewComponent implements OnInit {
   onCodeBlockBorderRadiusEvent($event: Event) {
     const target = $event.target as HTMLInputElement;
     this.markdownTheme.codeBlock.borderRadius = target.value;
-    return this.codeBlockBorderRadiusChange(this.markdownTheme.codeBlock.borderRadius);
+    this.codeBlockBorderRadiusChange(this.markdownTheme.codeBlock.borderRadius);
+    return this.supabaseService.updateThemeObjectOnChange(this.id, JSON.stringify(this.markdownTheme))
   }
 
   private codeBlockPaddingXChange(number: string) {
@@ -363,7 +386,8 @@ export class MarkdownPreviewComponent implements OnInit {
   onCodeBlockPaddingXEvent($event: Event) {
     const target = $event.target as HTMLInputElement;
     this.markdownTheme.codeBlock.paddingX = target.value;
-    return this.codeBlockPaddingXChange(this.markdownTheme.codeBlock.paddingX);
+    this.codeBlockPaddingXChange(this.markdownTheme.codeBlock.paddingX);
+    return this.supabaseService.updateThemeObjectOnChange(this.id, JSON.stringify(this.markdownTheme))
   }
 
   private codeBlockPaddingYChange(number: string) {
@@ -377,7 +401,8 @@ export class MarkdownPreviewComponent implements OnInit {
   onCodeBlockPaddingYEvent($event: Event) {
     const target = $event.target as HTMLInputElement;
     this.markdownTheme.codeBlock.paddingY = target.value;
-    return this.codeBlockPaddingYChange(this.markdownTheme.codeBlock.paddingY);
+    this.codeBlockPaddingYChange(this.markdownTheme.codeBlock.paddingY);
+    return this.supabaseService.updateThemeObjectOnChange(this.id, JSON.stringify(this.markdownTheme))
   }
   //#endregion
 
@@ -387,13 +412,19 @@ export class MarkdownPreviewComponent implements OnInit {
     const blockquotes = this.markdownNativeElement.querySelectorAll('blockquote');
     for (let i = 0; i < blockquotes!.length; i++) {
       blockquotes![i].style.color = color;
+      let paragraphs = blockquotes![i].querySelectorAll('p');
+      console.log(paragraphs)
+      for (let j = 0; j < paragraphs.length; j++) {
+        paragraphs[j].style.color = color;
+      }
     }
   }
 
   onBlockquoteColorChangeEvent($event: Event) {
     const target = $event.target as HTMLInputElement;
     this.markdownTheme.blockquotes.color = target.value;
-    return this.blockquoteColorChange(this.markdownTheme.blockquotes.color);
+    this.blockquoteColorChange(this.markdownTheme.blockquotes.color);
+    return this.supabaseService.updateThemeObjectOnChange(this.id, JSON.stringify(this.markdownTheme))
   }
 
   private blockquoteBorderLeftColorChange(color: string) {
@@ -406,7 +437,8 @@ export class MarkdownPreviewComponent implements OnInit {
   onBlockquoteBorderLeftColorChangeEvent($event: Event) {
     const target = $event.target as HTMLInputElement;
     this.markdownTheme.blockquotes.borderLeftColor = target.value;
-    return this.blockquoteBorderLeftColorChange(this.markdownTheme.blockquotes.borderLeftColor);
+    this.blockquoteBorderLeftColorChange(this.markdownTheme.blockquotes.borderLeftColor);
+    return this.supabaseService.updateThemeObjectOnChange(this.id, JSON.stringify(this.markdownTheme))
   }
 
   private blockquoteBorderLeftWidthChange(number: string) {
@@ -419,7 +451,8 @@ export class MarkdownPreviewComponent implements OnInit {
   onBlockquoteBorderLeftWidthChangeEvent($event: Event) {
     const target = $event.target as HTMLInputElement;
     this.markdownTheme.blockquotes.borderLeftWidth = target.value;
-    return this.blockquoteBorderLeftWidthChange(this.markdownTheme.blockquotes.borderLeftWidth);
+    this.blockquoteBorderLeftWidthChange(this.markdownTheme.blockquotes.borderLeftWidth);
+    return this.supabaseService.updateThemeObjectOnChange(this.id, JSON.stringify(this.markdownTheme))
   }
 
   private blockquotePaddingLeftChange(number: string) {
@@ -432,7 +465,8 @@ export class MarkdownPreviewComponent implements OnInit {
   onBlockquotePaddingLeftChangeEvent($event: Event) {
     const target = $event.target as HTMLInputElement;
     this.markdownTheme.blockquotes.paddingLeft = target.value;
-    return this.blockquotePaddingLeftChange(this.markdownTheme.blockquotes.paddingLeft);
+    this.blockquotePaddingLeftChange(this.markdownTheme.blockquotes.paddingLeft);
+    return this.supabaseService.updateThemeObjectOnChange(this.id, JSON.stringify(this.markdownTheme))
   }
 
   private blockquoteFontStyleChange(value: string) {
@@ -446,8 +480,8 @@ export class MarkdownPreviewComponent implements OnInit {
     const target = $event.target as HTMLInputElement;
     let isChecked = target.checked;
     this.markdownTheme.blockquotes.fontStyle = (isChecked) ? 'italic' : 'normal';
-    console.log(this.markdownTheme.blockquotes.fontStyle)
-    return this.blockquoteFontStyleChange(this.markdownTheme.blockquotes.fontStyle);
+    this.blockquoteFontStyleChange(this.markdownTheme.blockquotes.fontStyle);
+    return this.supabaseService.updateThemeObjectOnChange(this.id, JSON.stringify(this.markdownTheme))
   }
 
   //#endregion
@@ -463,7 +497,8 @@ export class MarkdownPreviewComponent implements OnInit {
     onListColorChangeEvent($event: Event) {
       const target = $event.target as HTMLInputElement;
       this.markdownTheme.lists.color = target.value;
-      return this.listColorChange(this.markdownTheme.lists.color);
+      this.listColorChange(this.markdownTheme.lists.color);
+      return this.supabaseService.updateThemeObjectOnChange(this.id, JSON.stringify(this.markdownTheme))
     }  
   //#endregion
 
@@ -494,14 +529,6 @@ export class MarkdownPreviewComponent implements OnInit {
   copyCss() {
     const css = document.querySelector('#css-code')?.textContent as string;
     return this.clipboard.copy(css);    
-  }
-
-  resetForm() {
-    // return this.markdownTheme = markdownDefaultConfig;
-    const anchors = this.markdownNativeElement.querySelectorAll('a');
-    for (let i = 0; i < anchors!.length; i++) {
-      anchors![i].style.textDecoration = 'none';
-    }
   }
 
   generateCss() {
@@ -595,6 +622,10 @@ export class MarkdownPreviewComponent implements OnInit {
       border-left-width: var(--theme-blockquotes-borderLeftWidth);
     }
 
+    .markdown blockquoote p {
+      color: var(--theme-blockquotes-color);
+    }
+
     .markdown ul,ol {
       color: var(--theme-list-color);
     }
@@ -614,5 +645,79 @@ export class MarkdownPreviewComponent implements OnInit {
     const icon = target.querySelector('.icofont-rounded-down');
     icon?.classList.toggle('green-arrow');
     icon?.classList.toggle('icofont-rotate-270');
+  }
+
+  private async setTheme() {
+    const markdown = document.querySelector('.md-preview-section') as HTMLElement;    
+    markdown!.style.backgroundColor = this.markdownTheme.backgroundColor;
+    const mdContainer = this.markdownContainer?.element.nativeElement;
+    
+    mdContainer!.style.fontFamily = this.markdownTheme.fontFamily;
+    mdContainer!.style.backgroundColor = this.markdownTheme.backgroundColor;
+
+    const headers = mdContainer!.querySelectorAll('h1,h2,h3,h4,h5,h6');
+    for (let i = 0; i < headers!.length; i++) {
+      let h = headers[i] as HTMLElement;
+      h.style.color = this.markdownTheme.headers.color;
+      h.style.letterSpacing = `${this.markdownTheme.headers.letterSpacing}px`;
+    }
+
+    const paragraphs =  mdContainer!.querySelectorAll('p');
+    for (let i = 0; i < paragraphs!.length; i++) {
+      paragraphs[i].style.color = this.markdownTheme.paragraph.color;
+      paragraphs[i].style.letterSpacing = `${this.markdownTheme.paragraph.letterSpacing}px`;
+    }
+
+    const anchors = mdContainer!.querySelectorAll('a');
+    for (let i = 0; i < anchors!.length; i++) {
+      anchors![i].style.color = this.markdownTheme.anchors.color;
+      anchors![i].style.letterSpacing = `${this.markdownTheme.anchors.letterSpacing}px`;
+      anchors![i].style.textDecoration = this.markdownTheme.anchors.textDecoration;
+      anchors![i].style.fontWeight = this.markdownTheme.anchors.fontWeight;
+    }
+
+    const code = this.markdownNativeElement.querySelectorAll('code');
+    for (let i = 0; i < code!.length; i++) {
+      if (code![i].parentElement.nodeName.toLowerCase() !== 'pre') {
+        code![i].style.color = this.markdownTheme.codeInline.color;
+        code![i].style.backgroundColor = this.markdownTheme.codeInline.backgroundColor;
+        code![i].style.fontWeight = this.markdownTheme.codeInline.fontWeight;
+        code![i].style.borderRadius = `${ this.markdownTheme.codeInline.borderRadius}px`;
+        code![i].style.paddingLeft = `${ this.markdownTheme.codeInline.paddingX}px`;
+        code![i].style.paddingRight = `${ this.markdownTheme.codeInline.paddingX}px`;
+        code![i].style.paddingTop = `${ this.markdownTheme.codeInline.paddingY}px`;
+        code![i].style.paddingBottom = `${ this.markdownTheme.codeInline.paddingY}px`;
+      }
+    }
+
+    const preCode = this.markdownNativeElement.querySelectorAll('pre');
+    for (let i = 0; i < preCode!.length; i++) {
+        preCode![i].style.color = this.markdownTheme.codeBlock.color;
+        preCode![i].style.backgroundColor = this.markdownTheme.codeBlock.backgroundColor;
+        preCode![i].style.fontWeight = this.markdownTheme.codeBlock.fontWeight;
+        preCode![i].style.borderRadius = `${ this.markdownTheme.codeBlock.borderRadius}px`;
+        preCode![i].style.paddingLeft = `${ this.markdownTheme.codeBlock.paddingX}px`;
+        preCode![i].style.paddingRight = `${ this.markdownTheme.codeBlock.paddingX}px`;
+        preCode![i].style.paddingTop = `${ this.markdownTheme.codeBlock.paddingY}px`;
+        preCode![i].style.paddingBottom = `${ this.markdownTheme.codeBlock.paddingY}px`;      
+    }
+
+    const blockquotes = this.markdownNativeElement.querySelectorAll('blockquote');
+    for (let i = 0; i < blockquotes!.length; i++) {
+      blockquotes![i].style.color = this.markdownTheme.blockquotes.color;
+      blockquotes![i].style.borderLeftColor = this.markdownTheme.blockquotes.borderLeftColor;
+      blockquotes![i].style.paddingLeft = `${ this.markdownTheme.blockquotes.paddingLeft}px`;
+      blockquotes![i].style.fontStyle = this.markdownTheme.blockquotes.fontStyle;
+      blockquotes![i].style.borderLeftWidth = `${this.markdownTheme.blockquotes.borderLeftWidth}px`;
+      let paragraphs = blockquotes![i].querySelectorAll('p');
+      for (let j = 0; j < paragraphs.length; j++) {
+        paragraphs[j].style.color = this.markdownTheme.blockquotes.color;
+      }
+    }
+
+    const list = this.markdownNativeElement.querySelectorAll('ol,ul');
+    for (let i = 0; i < list!.length; i++) {
+      list![i].style.color = this.markdownTheme.lists.color;
+    }
   }
 } 

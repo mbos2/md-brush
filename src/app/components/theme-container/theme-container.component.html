@@ -1,17 +1,84 @@
-<!-- <div class="theme-container is-flex">
-  <div
-    class="color"
-    *ngFor="let color of themeColors"
-    [ngStyle]="{ 'background-color': color }"
-  >
-    <span style="color: red">{{ color }}</span> 
+<div class="card">
+  <header class="is-flex is-justify-content-center is-align-items-center">
+    <span
+      *ngIf="!editingThemeName; else elseBlock"
+      class="title p-2 is-flex is-justify-content-center is-align-items-center"
+      >{{ theme.name }}
+      <a class="button is-rounded is-info is-small" (click)="editThemeName()">
+        <i class="icofont-ui-edit"></i>
+      </a>
+      <a
+        *ngIf="!isThemePublic; else elsePublic"
+        class="button is-rounded is-primary is-small"
+        (click)="setThemePublic()"
+      >
+        <i class="icofont-people"></i>
+        Set public
+      </a>
+      <ng-template #elsePublic>
+        <a
+          class="button is-rounded is-primary is-small"
+          (click)="(setThemePrivate)"
+        >
+          <i class="icofont-people"></i>
+          Set private
+        </a>
+      </ng-template>
+    </span>
+    <ng-template #elseBlock>
+      <span
+        class="
+          title
+          p-2
+          is-flex is-justify-content-center is-align-items-center
+        "
+        style="width: 100%"
+      >
+        <input
+          type="text"
+          [value]="theme.name"
+          class="input is-primary has-text-centered is-normal is-size-6"
+          [formControl]="name"
+        />
+        <a
+          class="button is-rounded is-info is-success is-small"
+          (click)="saveThemeName()"
+        >
+          <i class="icofont-save"></i>
+        </a>
+        <a
+          class="button is-rounded is-info is-warning is-small"
+          (click)="cancel()"
+        >
+          <i class="icofont-ban"></i>
+        </a>
+      </span>
+    </ng-template>
+  </header>
+
+  <div class="theme" style="width: 100%">
+    <div
+      *ngFor="let color of themeColors"
+      [ngStyle]="{ 'background-color': color }"
+      class="theme-block"
+      (mouseenter)="invertSpanColor($event)"
+    >
+      <span>
+        {{ color }}
+      </span>
+    </div>
   </div>
-</div> -->
-<div class="cont">
-  <div class="bg1">
-    <span>BLUE</span>
-  </div>
-  <div class="bg2"></div>
-  <div class="bg3"></div>
-  <div class="bg4"></div>
+
+  <footer class="card-footer">
+    <a
+      [routerLink]="['/theme', theme.id]"
+      class="card-footer-item button is-info is-small"
+      >Edit</a
+    >
+    <a
+      (click)="deleteTheme()"
+      class="card-footer-item button is-danger is-small"
+      >Delete</a
+    >
+  </footer>
 </div>

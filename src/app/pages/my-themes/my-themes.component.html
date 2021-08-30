@@ -1,5 +1,7 @@
 <div class="container">
-  <div *ngFor="let theme of themes" class="">
-    <app-theme-container [theme]="theme"> </app-theme-container>
+  <div class="columns is-multiline is-justify-content-center">
+    <div class="column is-5 has-text-centered" *ngFor="let theme of themes">
+      <app-theme-container [theme]="theme"></app-theme-container>
+    </div>
   </div>
 </div>

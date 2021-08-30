@@ -27,7 +27,8 @@ export class SupabaseService {
     return await this.supabase
       .from('mdThemes')
       .select('*')
-      .eq('userId', userId);
+      .eq('userId', userId)
+      .order('createdAt', { ascending: false })
   }
 
   async createTheme(id: string, userId: string | undefined, themeName: string, themeStringifiedObject: string) {
@@ -46,25 +47,24 @@ export class SupabaseService {
       .eq('id', themeId);
   }
 
-  async updateThemeObjectOnChange(themeId: string, themeStringifiedObject: string) {
+  async updateThemeObjectOnChange(themeId: string | null, themeStringifiedObject: string) {
     return await this.supabase
       .from('mdThemes')
       .update({ themeObject: themeStringifiedObject })
       .eq('id', themeId);
   }
 
-  async deleteThemeById(userId: string, themeId: string) {
+  async deleteThemeById(themeId: string) {
     return await this.supabase
       .from('mdThemes')
       .delete()
       .eq('id', themeId)
-      .eq('userId', userId);
   }
 
-  async publishTheme(themeId: string) {
+  async publishTheme(themeId: string, isPublic: any) {
     return await this.supabase
       .from('mdThemes')
-      .update({ isPublish: true })
+      .update({ isPublish: isPublic })
       .eq('id', themeId);
   }
 

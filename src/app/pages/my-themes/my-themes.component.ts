@@ -12,6 +12,8 @@ export class MyThemesComponent implements OnInit {
 
   userId: any;
   themes: any;
+
+  
   constructor(private supabaseService: SupabaseService, private auth0: Auth0Service) {
     this.auth0.user$.subscribe(user => {
       return this.userId = user?.sub;
@@ -21,7 +23,5 @@ export class MyThemesComponent implements OnInit {
 
   async ngOnInit() {
     this.themes = await (await this.supabaseService.selectThemesByUserId(this.userId)).body;
-    console.log(this.themes)
-    console.log()
   }
 }
