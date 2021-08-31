@@ -13,7 +13,8 @@ export class SupabaseService {
     return await this.supabase
       .from('mdThemes')
       .select('*')
-      .is('isPublic', true);
+      .is('isPublic', true)
+      .order('createdAt', { ascending: false });
   }
 
   async selectThemeById(themeId: string) {
