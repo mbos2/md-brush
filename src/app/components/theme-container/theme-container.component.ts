@@ -64,6 +64,7 @@ export class ThemeContainerComponent implements OnInit {
 
   deleteTheme() {
     this.supabase.deleteThemeById(this.theme.id);
+    return window.location.reload();
   }
 
   setThemePublic() {

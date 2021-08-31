@@ -1,8 +1,13 @@
 <div class="card">
-  <header class="is-flex is-justify-content-center is-align-items-center">
+  <header
+    class="
+      is-flex is-justify-content-center is-align-items-center
+      mobile-column
+    "
+  >
     <span
       *ngIf="!editingThemeName; else elseBlock"
-      class="title p-2 is-flex is-justify-content-center is-align-items-center"
+      class="title p-2 mobile-column"
       >{{ theme.name }}
       <a class="button is-rounded is-info is-small" (click)="editThemeName()">
         <i class="icofont-ui-edit"></i>
@@ -73,6 +78,7 @@
     <a
       [routerLink]="['/theme', theme.id]"
       class="card-footer-item button is-info is-small"
+      aria-label="Edit"
       ><span
         title="Seens"
         class="
@@ -87,6 +93,7 @@
     <a
       (click)="deleteTheme()"
       class="card-footer-item button is-danger is-small"
+      aria-label="Delete"
       >Delete</a
     >
   </footer>

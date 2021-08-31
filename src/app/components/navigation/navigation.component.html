@@ -1,6 +1,12 @@
 <nav class="navbar" role="navigation" aria-label="main navigation">
   <div class="navbar-brand">
-    <a class="navbar-item" routerLink="/">
+    <a
+      class="navbar-item"
+      routerLink="/"
+      alt=""
+      rel="noopener"
+      aria-label="Home"
+    >
       <svg
         class="logo md-svg-logo"
         xmlns="http://www.w3.org/2000/svg"
@@ -100,8 +106,22 @@
       "
       style="gap: 1rem"
     >
-      <a class="navbar-item link" routerLink="explore"> Explore </a>
-      <a class="navbar-item link-no-after pulse" routerLink="new"> Generate </a>
+      <a
+        class="navbar-item link"
+        routerLink="explore"
+        rel="noopener"
+        aria-label="Explore"
+      >
+        Explore
+      </a>
+      <a
+        class="navbar-item link-no-after pulse"
+        routerLink="new"
+        rel="noopener"
+        aria-label="Generate"
+      >
+        Generate
+      </a>
       <app-auth-button class="auth-button"></app-auth-button>
     </div>
   </div>
