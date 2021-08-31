@@ -7,7 +7,12 @@
   >
     <span
       *ngIf="!editingThemeName; else elseBlock"
-      class="title p-2 mobile-column"
+      class="
+        title
+        p-2
+        is-flex is-justify-content-center is-align-items-center
+        mobile-column
+      "
       >{{ theme.name }}
       <a class="button is-rounded is-info is-small" (click)="editThemeName()">
         <i class="icofont-ui-edit"></i>

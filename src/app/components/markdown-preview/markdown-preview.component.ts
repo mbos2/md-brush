@@ -64,7 +64,7 @@ export class MarkdownPreviewComponent implements OnInit {
     this.id = theme.body![0].id;
     this.markdownTheme = JSON.parse(theme.body![0].themeObject);
     
-    this.markdownRaw = await this.http.get('/assets/md/starter-template.md', 
+    this.markdownRaw = await this.http.get('/assets/md/blog1.md', 
       { responseType: 'text' }).toPromise();
     this.markdown = this.mdService.compile(this.markdownRaw);
     this.markdownNativeElement = this.markdownContainer?.element.nativeElement;
