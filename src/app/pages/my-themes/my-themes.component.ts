@@ -10,15 +10,17 @@ import { SupabaseService } from 'src/app/services/supabase.service';
 })
 export class MyThemesComponent implements OnInit {
   userId: any;
-  themes: any;  
+  themes: any;
+  ifAnyTheme = false;
   constructor(private supabaseService: SupabaseService, private auth0: Auth0Service) {
     this.auth0.user$.subscribe(user => {
       return this.userId = user?.sub;
     });
-    console.log(this.userId)
+    console.log(this.userId)    
   }
 
   async ngOnInit() {
     this.themes = await (await this.supabaseService.selectThemesByUserId(this.userId)).body;
+    this.ifAnyTheme = (this.themes.length > 0) ? true : false;
   }
 }

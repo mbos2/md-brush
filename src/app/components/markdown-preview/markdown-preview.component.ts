@@ -660,6 +660,7 @@ export class MarkdownPreviewComponent implements OnInit {
   }
 
   arrowAnimationToggle($event: Event) {
+    $event.preventDefault();
     const target = $event.currentTarget as HTMLElement;
     const icon = target.querySelector('.icofont-rounded-down');
     icon?.classList.toggle('green-arrow');
@@ -741,6 +742,15 @@ export class MarkdownPreviewComponent implements OnInit {
   }
 
   setThemeEv() {
+    this.generateCss();
     this.setTheme();
+    let preview = document.getElementById('previewModal');
+    let css = document.createElement('style');
+    css.innerHTML = `${this.cssString}`;
+    preview?.appendChild(css);
+  }
+
+  preventDefault(event: Event) {
+    event.preventDefault()
   }
 } 

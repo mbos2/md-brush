@@ -1,13 +1,15 @@
 <div class="container">
-  <div class="block">
-    <div class="box has-text-centered" *ngIf="themes.length < 1">
-      <p class="subtitle">Looks like you do not have any themes yet.</p>
-      <p class="title">
-        Head out to <a routerLink="/new" class="link">generator</a> to create
-        your first theme!
-      </p>
+  <ng-template #elseBlock>
+    <div class="block">
+      <div class="box has-text-centered" *ngIf="themes.length < 1">
+        <p class="subtitle">Looks like you do not have any themes yet.</p>
+        <p class="title">
+          Head out to <a routerLink="/new" class="link">generator</a> to create
+          your first theme!
+        </p>
+      </div>
     </div>
-  </div>
+  </ng-template>
   <div class="columns is-multiline is-justify-content-center">
     <div class="column is-5 has-text-centered" *ngFor="let theme of themes">
       <app-theme-container [theme]="theme"></app-theme-container>
