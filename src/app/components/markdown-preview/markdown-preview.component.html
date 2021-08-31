@@ -16,6 +16,10 @@
         class="markdown-editor md-preview"
         [(ngModel)]="markdownRaw"
         [value]="markdownRaw"
+        (change)="setThemeEv()"
+        [ngModel]="markdownRaw"
+        (ngModelChange)="setThemeEv()"
+        (input)="setThemeEv()"
         name="markdown-editor"
       >
       </textarea>

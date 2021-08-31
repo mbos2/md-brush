@@ -739,4 +739,8 @@ export class MarkdownPreviewComponent implements OnInit {
       list![i].style.color = this.markdownTheme.lists.color;
     }
   }
+
+  setThemeEv() {
+    this.setTheme();
+  }
 } 
