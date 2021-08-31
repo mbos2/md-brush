@@ -54,6 +54,17 @@ export class SupabaseService {
       .eq('id', themeId);
   }
 
+  async selectThemeSeen(themeId: string | null) {
+    return await this.supabase
+      .from('mdThemes')
+      .select('seen')
+      .eq('themeId', themeId);
+  }
+
+  async updateThemeSeenOnPreview(themeId: string | null) {
+    return await this.supabase.rpc('incrementthemeseen', { row_id: themeId })
+  }
+
   async deleteThemeById(themeId: string) {
     return await this.supabase
       .from('mdThemes')

@@ -73,7 +73,16 @@
     <a
       [routerLink]="['/theme', theme.id]"
       class="card-footer-item button is-info is-small"
-      >Edit</a
+      ><span
+        title="Seens"
+        class="
+          badge
+          is-bottom-left is-flex is-justify-content-center is-align-items-center
+        "
+      >
+        {{ theme.seen }}</span
+      >
+      Edit</a
     >
     <a
       (click)="deleteTheme()"

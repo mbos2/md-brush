@@ -19,21 +19,17 @@ export class ThemeContainerComponent implements OnInit {
   ngOnInit(): void {
     this.themeParsed = JSON.parse(this.theme.themeObject);
     this.themeColors = [
-      this.themeParsed.backgroundColor,
-      this.themeParsed.headers.color,
-      this.themeParsed.paragraph.color,
-      this.themeParsed.anchors.color,
-      this.themeParsed.codeInline.color,
-      this.themeParsed.codeBlock.color,
-      this.themeParsed.blockquotes.color,
-      this.themeParsed.lists.color
+      this.themeParsed.backgroundColor.toUpperCase(),
+      this.themeParsed.headers.color.toUpperCase(),
+      this.themeParsed.paragraph.color.toUpperCase(),
+      this.themeParsed.anchors.color.toUpperCase(),
+      this.themeParsed.codeInline.color.toUpperCase(),
+      this.themeParsed.codeBlock.color.toUpperCase(),
+      this.themeParsed.blockquotes.color.toUpperCase(),
+      this.themeParsed.lists.color.toUpperCase()
     ];
     this.name.setValue(this.theme.name);
     this.isThemePublic = this.theme.isPublic;
-  }
-
-  appendDivColors() {
-    let divs = document.querySelectorAll('.color')
   }
 
   invertSpanColor(event: Event) {

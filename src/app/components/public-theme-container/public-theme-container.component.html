@@ -22,8 +22,21 @@
   <footer class="card-footer">
     <a
       [routerLink]="['/theme', theme.id]"
-      class="card-footer-item button is-info is-small"
-      >Preview</a
-    >
+      (click)="incrementSeen()"
+      class="card-footer-item button is-info is-small is-size-4"
+      ><span
+        title="Seens"
+        class="
+          badge
+          is-bottom-right
+          is-flex
+          is-justify-content-center
+          is-align-items-center
+        "
+      >
+        {{ theme.seen }}</span
+      >
+      Preview
+    </a>
   </footer>
 </div>
