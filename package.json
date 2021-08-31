@@ -24,6 +24,7 @@
     "@creativebulma/bulma-badge": "^1.0.1",
     "@creativebulma/bulma-collapsible": "^1.0.4",
     "@supabase/supabase-js": "^1.22.4",
+    "accordion-js": "^3.1.1",
     "angular-responsive-carousel": "^2.1.2",
     "bulma": "^0.9.3",
     "bulma-accordion": "^2.0.1",
