@@ -1,1 +1,32 @@
+.columns
+  gap: 2rem
 
+.cell
+  height: 60%
+  gap: 10px
+  img
+    width: 50%
+    height: 100%
+  .mid
+    height: 120%
+    margin-bottom: 20px
+  .mid-z
+    position: relative
+    z-index: 9999
+    right: 25em
+    top: 10rem
+
+@media only screen and (max-width: 1215px) and (min-width: 1024px)
+  .cell
+    img
+      width: 45%
+
+@media only screen and (max-width: 1023px)
+  .mobile-column
+    flex-direction: column
+    .column
+      width: 100%
+      justify-content: center
+  .cell
+    img
+      width: 30%

@@ -6,6 +6,7 @@ import { HttpClientModule } from '@angular/common/http';
 import { MarkdownModule } from 'ngx-markdown';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { AuthModule } from '@auth0/auth0-angular';
+import {IvyCarouselModule} from 'angular-responsive-carousel';
 
 // App components
 import { AppComponent } from './app.component';
@@ -56,6 +57,7 @@ import { PublicThemeContainerComponent } from './components/public-theme-contain
     ClipboardModule,
     FormsModule,
     ReactiveFormsModule,
+    IvyCarouselModule,
   ],
   providers: [Auth0Service, SupabaseService],
   bootstrap: [AppComponent]
